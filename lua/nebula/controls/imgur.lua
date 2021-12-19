@@ -43,15 +43,15 @@ end
 
 function PANEL:Paint(w, h)
     if (!self.HasImage) then return end
-    surface.SetDrawColor(self:GetColor())
+    surface.SetDrawColor(color_white)
     surface.SetMaterial(self.Material)
     surface.DrawTexturedRect(0, 0, w, h)
 end
 
-vgui.Register("NebulaUI.Imgur", PANEL, "DPanel")
+vgui.Register("nebula.imgur", PANEL, "DPanel")
 
 function NebulaUI:Imgur(url)
-    local imgur = vgui.Create("NebulaUI.Imgur")
+    local imgur = vgui.Create("nebula.imgur")
     imgur:SetImage(url)
     return imgur
 end

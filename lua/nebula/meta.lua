@@ -34,3 +34,15 @@ function NebulaUI:Font(x, title)
         return fontName
     end
 end
+
+local meta = FindMetaTable("Panel")
+
+function meta:SetPosGrid(x, y, w, h)
+    local parent = self:GetParent()
+
+    if (not parent.IsGrid) then
+        Error("The ui element it's not parented into a grid (nebula.grid)")
+    end
+
+    parent:SetZone(self, x, y, w, h)
+end
