@@ -59,11 +59,32 @@ function PANEL:AddTab(name, control, press)
     btn:SetTextColor(Color(255, 255, 255, 150))
     btn:SetText(name)
     btn.DoClick = function(s)
+        local newControl = self.Controls[name]
+        if (IsValid(newControl) and newControl == self.ActivePanel) then
+            return
+        end
+
+        if IsValid(self.ActivePanel) then
+            local ref = self.ActivePanel
+            ref:AlphaTo(0, .15, 0, function()
+                ref:SetVisible(false)
+            end)
+        end
+
+        if IsValid(newControl) then
+            newControl:SetVisible(true)
+            newControl:AlphaTo(255, .15, 0)
+        else
+            newControl = vgui.Create(control, self.Container)
+            newControl:Dock(FILL)
+            newControl:SetAlpha(0)
+            newControl:AlphaTo(255, .15, 0)
+            self.Controls[name] = newControl
+        end
+
+        newControl:InvalidateLayout(true)
+        self.ActivePanel = newControl
         self.ActiveTab = s
-    end
-    btn.OnCursorEntered = function(s)
-    end
-    btn.OnCursorExited = function(s)
     end
     btn.Alpha = 0
     btn.Paint = function(s, w, h)
@@ -85,6 +106,11 @@ function PANEL:AddTab(name, control, press)
 
     if (self.MaxButtonWide < tx) then
         self.MaxButtonWide = tx
+    end
+
+    if not self.didinit then
+        self.didinit = true
+        btn:DoClick()
     end
 
     table.insert(self.Buttons, btn)
@@ -120,3 +146,9 @@ function PANEL:PerformLayout(w, h)
 end
 
 vgui.Register("nebula.tab", PANEL, "DPanel")
+
+if IsValid(NebulaF4.Panel) then
+    NebulaF4.Panel:Remove()
+end
+
+//vgui.Create("nebula.f4")

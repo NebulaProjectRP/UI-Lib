@@ -46,3 +46,28 @@ function meta:SetPosGrid(x, y, w, h)
 
     parent:SetZone(self, x, y, w, h)
 end
+
+local matBlurScreen = Material( "pp/blurscreen" )
+
+function meta:DrawBlur( passes, power )
+
+	local x, y = self:LocalToScreen( 0, 0 )
+
+	local wasEnabled = DisableClipping( true )
+
+	-- Menu cannot do blur
+	if ( !MENU_DLL ) then
+		surface.SetMaterial( matBlurScreen )
+		surface.SetDrawColor( 255, 255, 255, 255 )
+
+		for i = 0, passes / 3, 0.33 do
+			matBlurScreen:SetFloat( "$blur", power * i )
+			matBlurScreen:Recompute()
+			if ( render ) then render.UpdateScreenEffectTexture() end
+			surface.DrawTexturedRect( x * -1, y * -1, ScrW(), ScrH() )
+		end
+	end
+    
+	DisableClipping( wasEnabled )
+
+end
