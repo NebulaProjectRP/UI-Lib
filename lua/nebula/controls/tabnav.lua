@@ -146,9 +146,3 @@ function PANEL:PerformLayout(w, h)
 end
 
 vgui.Register("nebula.tab", PANEL, "DPanel")
-
-if IsValid(NebulaF4.Panel) then
-    NebulaF4.Panel:Remove()
-end
-
-//vgui.Create("nebula.f4")

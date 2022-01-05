@@ -7,7 +7,12 @@ end
 
 function PANEL:SetItem(id, isLocal)
     self.isLocal = isLocal
+    if (string.StartWith(id, "unique_")) then
+        id = tonumber(string.Explode("_", id)[2])
+        MsgN(id)
+    end
     self.Reference = NebulaInv.Items[id]
+
     if (isLocal) then
         self.Item = LocalPlayer():getInventory()[id]
     end
@@ -35,3 +40,5 @@ function PANEL:Paint(w, h)
 
     draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(235, 235, 235, 50))
 end
+
+vgui.Register("nebula.item", PANEL, "DPanel")
