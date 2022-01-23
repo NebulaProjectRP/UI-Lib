@@ -5,6 +5,7 @@ AccessorFunc(PANEL, "m_iGap", "Gap", FORCE_NUMBER)
 PANEL.Controls = {}
 PANEL.Buttons = {}
 PANEL.ActiveTab = nil
+PANEL._tabOrder = {}
 
 function PANEL:Init()
     self:SetContentAlignment(TEXT_ALIGN_CENTER)
@@ -13,6 +14,8 @@ function PANEL:Init()
     self.Buttons = {}
     self.ActiveTab = nil
     self.MaxButtonWide = 0
+
+    self._tabOrder = {}
 
     self.currAlpha = 0
 end
@@ -32,6 +35,9 @@ function PANEL:Paint(w, h)
     surface.DrawTexturedRect(w / 2, h - 2, barWide, 2)
     surface.SetTexture(grr)
     surface.DrawTexturedRect(w / 2 - barWide, h - 2, barWide, 2)
+end
+
+function PANEL:OnTabSelected(tab)
 end
 
 function PANEL:SetContent(pnl)
@@ -83,6 +89,7 @@ function PANEL:AddTab(name, control, press)
         end
 
         newControl:InvalidateLayout(true)
+        self:OnTabSelected(s, newControl)
         self.ActivePanel = newControl
         self.ActiveTab = s
     end
@@ -108,13 +115,21 @@ function PANEL:AddTab(name, control, press)
         self.MaxButtonWide = tx
     end
 
-    if not self.didinit then
+    if not press and not self.didinit then
         self.didinit = true
         btn:DoClick()
     end
 
-    table.insert(self.Buttons, btn)
+    self.Buttons[name] = btn
+    table.insert(self._tabOrder, btn)
     self:InvalidateLayout(true)
+end
+
+function PANEL:SelectTab(name)
+    if IsValid(self.Buttons[name]) then
+        self.Buttons[name]:DoClick()
+        self.didinit = true
+    end
 end
 
 function PANEL:PerformLayout(w, h)
@@ -135,11 +150,11 @@ function PANEL:PerformLayout(w, h)
     local startAt = remainingWide / 2
     local separation = self.MaxButtonWide + self:GetGap()
 
-    for k = 1, #self.Buttons do
-        local btn = self.Buttons[k]
+    for k = 1, #self._tabOrder do
+        local btn = self._tabOrder[k]
         btn:SetPos(startAt, 0)
         startAt = startAt + separation
-        if IsValid(self.Header) and math.Round(#self.Buttons / 2) == k then
+        if IsValid(self.Header) and math.Round(table.Count(self.Buttons) / 2) == k then
             startAt = startAt + self.Header:GetWide() + self:GetGap()
         end
     end
