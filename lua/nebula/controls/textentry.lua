@@ -6,7 +6,7 @@ function TEXT:Init()
     self.textentry = vgui.Create("DTextEntry", self)
     self.textentry:Dock(FILL)
     self.textentry:SetFont(NebulaUI:Font(18))
-    self.textentry:DockMargin(8, 8, 8, 8)
+    self.textentry:DockMargin(8, 8, 0, 0)
     self.textentry:SetUpdateOnType(true)
 
     self.textentry.OnEnter = function(s, val)
@@ -29,6 +29,10 @@ function TEXT:Init()
 end
 
 function TEXT:OnEnter()
+end
+
+function TEXT:SetNumeric(b)
+    self.textentry:SetNumeric(b)
 end
 
 function TEXT:OnValueChange(txt)
