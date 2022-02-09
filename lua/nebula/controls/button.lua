@@ -22,3 +22,32 @@ function BUTTON:Paint(w, h)
 end
 
 vgui.Register("nebula.button", BUTTON, "DButton")
+
+local CLOSE = {}
+
+function CLOSE:Init()
+    self:SetText("✕")
+    self:SetSize(32, 32)
+end
+
+function CLOSE:SetTarget(target)
+    self.Target = target
+end
+
+function CLOSE:DoClick()
+    if (self.Target and not isfunction(self.Target)) then
+        self.Target:Remove()
+    elseif (self.Target and isfunction(self.Target)) then
+        self.Target()
+    end
+end
+
+function CLOSE:OnCursorEntered()
+    self:SetFont(NebulaUI:Font(24))
+end
+
+function CLOSE:OnCursorExited()
+    self:SetFont(NebulaUI:Font(20))
+end
+
+vgui.Register("nebula.close", CLOSE, "nebula.button")

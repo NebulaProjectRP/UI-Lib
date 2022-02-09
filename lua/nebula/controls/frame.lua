@@ -55,3 +55,64 @@ function SCROLL:Paint(w, h)
 end
 
 vgui.Register("nebula.scroll", SCROLL, "DScrollPanel")
+vgui.Register("nebula.scrollpanel", SCROLL, "DScrollPanel")
+
+local FORM = {}
+AccessorFunc(FORM, "m_sTitle", "Title", FORCE_STRING)
+
+function FORM:Init()
+    self:GetCanvas():DockPadding(16, 16, 16, 16)
+end
+
+function FORM:SetTitle(title)
+    self.m_sTitle = title
+    self:GetCanvas():DockPadding(16, title != "" and 48 or 16, 16, 16)
+end
+
+function FORM:Paint(w, h)
+    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 25))
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.SimpleText(self:GetTitle(), NebulaUI:Font(20), w / 2, 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    
+    if (self.m_sTitle) then
+        surface.SetDrawColor(255, 255, 255, 5)
+        surface.DrawRect(8, 32, w - 16, 1) 
+    end
+end
+
+function FORM:AddElement(name, vguielement)
+    local label = vgui.Create("DLabel", self)
+    label:SetFont(NebulaUI:Font(16))
+    label:Dock(TOP)
+    label:SetText(name)
+
+    local element = vgui.Create(vguielement, self)
+    element:Dock(TOP)
+    element:DockMargin(0, 4, 0, 8)
+    if (vguielement == "nebula.textentry") then
+        element:SetTall(24)
+    end
+
+    return element, label
+end
+
+function FORM:AddSpace(tall)
+    local space = vgui.Create("Panel", self)
+    space:Dock(TOP)
+    space:SetTall(tall or 4)
+
+    return space
+end
+
+function FORM:AddLabel(text, size)
+    size = size or 16
+    local label = vgui.Create("DLabel", self)
+    label:Dock(TOP)
+    label:SetFont(NebulaUI:Font(size))
+    label:SetTall(size + 4)
+    label:SetText(text)
+
+    return label
+end
+
+vgui.Register("nebula.form", FORM, "DScrollPanel")
