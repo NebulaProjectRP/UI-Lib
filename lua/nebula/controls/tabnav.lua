@@ -1,7 +1,7 @@
 local PANEL = {}
 AccessorFunc(PANEL, "m_iAllign", "ContentAlignment", FORCE_NUMBER)
 AccessorFunc(PANEL, "m_iGap", "Gap", FORCE_NUMBER)
-
+AccessorFunc(PANEL, "m_tColor", "Color")
 PANEL.Controls = {}
 PANEL.Buttons = {}
 PANEL.ActiveTab = nil
@@ -18,6 +18,7 @@ function PANEL:Init()
     self._tabOrder = {}
 
     self.currAlpha = 0
+    self:SetColor(color_white)
 end
 
 local gru = surface.GetTextureID("vgui/gradient-u")
@@ -30,7 +31,7 @@ function PANEL:Paint(w, h)
     end
 
     local barWide = (self.currAlpha / 255) * (w / 2)
-    surface.SetDrawColor(255, 255, 255, self.currAlpha * .8)
+    surface.SetDrawColor(ColorAlpha(self:GetColor(), self.currAlpha * .8))
     surface.SetTexture(grl)
     surface.DrawTexturedRect(w / 2, h - 2, barWide, 2)
     surface.SetTexture(grr)
@@ -62,6 +63,7 @@ function PANEL:AddTab(name, control, press)
     local btn = vgui.Create("nebula.button", self)
     btn:SetFont(NebulaUI:Font(24))
     btn:SetTall(self:GetTall() - 2)
+    btn:SetTextInset(0, -2)
     btn:SetTextColor(Color(255, 255, 255, 150))
     btn:SetText(name)
     btn.DoClick = function(s)
@@ -97,14 +99,16 @@ function PANEL:AddTab(name, control, press)
     btn.Paint = function(s, w, h)
         s.Alpha = Lerp(FrameTime() * 10, s.Alpha, (s:IsHovered() or self.ActiveTab == s) and 255 or 0)
         local wide = w * (s.Alpha / 255)
-        draw.RoundedBoxEx(4, w / 2 - wide / 2, h - 4, wide, 4, Color(255, 255, 255, s.Alpha), false, false, true, true)
-        surface.SetDrawColor(255, 255, 255, s.Alpha * .25)
-        surface.DrawRect(2, 0, w - 4, 2)
+        draw.RoundedBoxEx(4, w / 2 - wide / 2, h - 2, wide, 2, ColorAlpha(self:GetColor(), s.Alpha), false, false, true, true)
+        surface.SetDrawColor(ColorAlpha(self:GetColor(), s.Alpha * .4))
+        surface.DrawRect(1, 1, w - 2, 1)
+
+        surface.DrawTexturedRect(0, 0, 1, h * (s.Alpha / 255))
+        surface.DrawTexturedRect(w - 1, 0, 1, h * (s.Alpha / 255))
+
+        surface.SetDrawColor(ColorAlpha(self:GetColor(), s.Alpha * .1))
         surface.SetTexture(gru)
         surface.DrawTexturedRect(4, 4, w - 8, h * (s.Alpha / 255) - 8)
-
-        surface.DrawTexturedRect(0, 0, 2, h * (s.Alpha / 255))
-        surface.DrawTexturedRect(w - 2, 0, 2, h * (s.Alpha / 255))
     end
 
     surface.SetFont(NebulaUI:Font(24))

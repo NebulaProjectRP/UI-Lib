@@ -145,9 +145,10 @@ end
 if (IsValid(NebulaUI.QuestionPanel)) then
     NebulaUI.QuestionPanel:Remove()
 end
-
+/*
 NebulaUI:Ask(p(1), "This is a long ass question, this time the timer will happen\nso watcha gonna do!?", "Yes", function()
 end, "No", function()
 end):SetTimer(5, function()
     MsgN("Timer Off")
 end)
+*/
