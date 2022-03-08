@@ -10,3 +10,9 @@ NebulaUI.Derma.CheckboxOn = GWEN.CreateTextureNormal(64 + 16, 0, 16, 16, dermaIm
 
 NebulaUI.Derma.TextEntry = GWEN.CreateTextureBorder(96, 0, 32, 32, 16, 16, 16, 16, dermaImage)
 NebulaUI.Derma.TextEntryOn = GWEN.CreateTextureBorder(96 + 32, 0, 32, 32, 16, 16, 16, 16, dermaImage)
+
+local invImage = Material("nebularp/ui/inventory_icons")
+NebulaUI.Derma.Inventory = {}
+for k = 0, 7 do
+    table.insert(NebulaUI.Derma.Inventory, GWEN.CreateTextureNormal(k * 32, 0, 32, 32, invImage))
+end
