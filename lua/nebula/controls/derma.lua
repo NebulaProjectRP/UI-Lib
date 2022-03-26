@@ -16,3 +16,9 @@ NebulaUI.Derma.Inventory = {}
 for k = 0, 7 do
     table.insert(NebulaUI.Derma.Inventory, GWEN.CreateTextureNormal(k * 32, 0, 32, 32, invImage))
 end
+
+local f4Image = Material("nebularp/ui/navicons")
+NebulaUI.Derma.F4 = {}
+for k = 0, 7 do
+    table.insert(NebulaUI.Derma.F4, GWEN.CreateTextureNormal(k * 32, 0, 32, 32, f4Image))
+end

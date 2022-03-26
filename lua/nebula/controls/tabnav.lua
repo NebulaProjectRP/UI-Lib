@@ -72,6 +72,10 @@ function PANEL:AddTab(name, control, press)
             return
         end
 
+        surface.PlaySound("nebularp/doclick.mp3")
+        surface.PlaySound("nebularp/doclick.mp3")
+        surface.PlaySound("nebularp/doclick.mp3")
+
         if IsValid(self.ActivePanel) then
             local ref = self.ActivePanel
             ref:AlphaTo(0, .15, 0, function()
@@ -96,24 +100,54 @@ function PANEL:AddTab(name, control, press)
         self.ActiveTab = s
     end
     btn.Alpha = 0
+    btn.SetColor = function(s, clr)
+        s.TargetColor = clr
+        s.Progress = 0
+
+        return s
+    end
+    btn.SetIcon = function(s, icon)
+        btn.iconfunc = icon
+        s:SetContentAlignment(4)
+
+        surface.SetFont(s:GetFont())
+        local tx, _ = surface.GetTextSize(s:GetText())
+
+        s:SetTextInset(s:GetWide() / 2 - tx / 2 + 14, 0)
+
+        return s
+    end
     btn.Paint = function(s, w, h)
+        MsgN(s.TargetColor)
+        if (s.TargetColor) then
+            s.Progress = Lerp(FrameTime() * 2, s.Progress, self.ActiveTab == s and 1 or 0)
+            s.Color = LerpVector(s.Progress, color_white:ToVector(), s.TargetColor:ToVector())
+        end
+
         s.Alpha = Lerp(FrameTime() * 10, s.Alpha, (s:IsHovered() or self.ActiveTab == s) and 255 or 0)
+        local color = s.Color and s.Color:ToColor() or self:GetColor()
         local wide = w * (s.Alpha / 255)
-        draw.RoundedBoxEx(4, w / 2 - wide / 2, h - 2, wide, 2, ColorAlpha(self:GetColor(), s.Alpha), false, false, true, true)
-        surface.SetDrawColor(ColorAlpha(self:GetColor(), s.Alpha * .4))
+        draw.RoundedBoxEx(4, w / 2 - wide / 2, h - 2, wide, 2, ColorAlpha(color, s.Alpha), false, false, true, true)
+        surface.SetDrawColor(ColorAlpha(color, s.Alpha * .4))
         surface.DrawRect(1, 1, w - 2, 1)
 
         surface.DrawTexturedRect(0, 0, 1, h * (s.Alpha / 255))
         surface.DrawTexturedRect(w - 1, 0, 1, h * (s.Alpha / 255))
 
-        surface.SetDrawColor(ColorAlpha(self:GetColor(), s.Alpha * .1))
+        surface.SetDrawColor(ColorAlpha(color, s.Alpha * .1))
         surface.SetTexture(gru)
         surface.DrawTexturedRect(4, 4, w - 8, h * (s.Alpha / 255) - 8)
+
+        if (s.iconfunc) then
+            surface.SetFont(s:GetFont())
+            local tx, _ = surface.GetTextSize(s:GetText())
+            s.iconfunc(w / 2 - tx / 2 - 14, h / 2 - 12, 24, 24, s.TargetColor or self:GetColor())
+        end
     end
 
     surface.SetFont(NebulaUI:Font(24))
     local tx, _ = surface.GetTextSize(name)
-    tx = tx + 32
+    tx = tx + 52
 
     if (self.MaxButtonWide < tx) then
         self.MaxButtonWide = tx
@@ -127,6 +161,8 @@ function PANEL:AddTab(name, control, press)
     self.Buttons[name] = btn
     table.insert(self._tabOrder, btn)
     self:InvalidateLayout(true)
+
+    return btn
 end
 
 function PANEL:SelectTab(name)

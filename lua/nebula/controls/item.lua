@@ -21,10 +21,8 @@ function PANEL:SetItem(id, isLocal)
     end
 
     self.isLocal = isLocal
-    if (string.StartWith(id, "unique_")) then
-        id = tonumber(string.Explode("_", id)[2])
-    end
-    self.Reference = NebulaInv.Items[id]
+
+    self.Reference = NebulaInv:GetReference(id)
     if not self.Reference then
         return false
     end
