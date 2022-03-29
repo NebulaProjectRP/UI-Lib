@@ -58,8 +58,9 @@ function GRID:PerformLayout(w, h)
     local row_height = (h / self:GetRows()) - self:GetSpace() * 1
     for control, points in pairs(self.Rules) do
         if not IsValid(control) then continue end
-        control:SetSize(points.w * col_wide + self:GetSpace() * (points.w - 1), points.h * row_height + self:GetSpace() * (points.h - 1))
-        control:SetPos(points.x * (col_wide + self:GetSpace()) + self:GetSpace() / 2, points.y * (row_height + self:GetSpace()) + self:GetSpace() / 2)
+        local l, t, r, b = control:GetDockMargin()
+        control:SetPos(points.x * (col_wide + self:GetSpace()) + self:GetSpace() / 2 + l, points.y * (row_height + self:GetSpace()) + self:GetSpace() / 2 + t)
+        control:SetSize(points.w * col_wide + self:GetSpace() * (points.w - 1) - (r + l), points.h * row_height + self:GetSpace() * (points.h - 1) - (b + t))
     end
 end
 

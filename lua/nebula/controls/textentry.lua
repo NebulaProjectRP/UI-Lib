@@ -29,7 +29,7 @@ function TEXT:Init()
 
 end
 
-function TEXT:OnEnter()
+function TEXT:OnEnter(val)
 end
 
 function TEXT:SetNumeric(b)
@@ -59,6 +59,10 @@ end
 
 function TEXT:GetText()
     return self.textentry:GetText()
+end
+
+function TEXT:GetValue()
+    return ""
 end
 
 function TEXT:Paint(w, h)
