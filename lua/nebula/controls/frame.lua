@@ -39,6 +39,7 @@ function PANEL:PerformLayout(w, h)
 
     self.btnClose:SetSize(28, 28)
     self.btnClose:SetPos(w - 32, 2)
+    self.btnClose:SetZPos(999)
 end
 
 vgui.Register("nebula.frame", PANEL, "DFrame")

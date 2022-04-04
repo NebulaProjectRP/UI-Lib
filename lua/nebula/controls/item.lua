@@ -53,7 +53,7 @@ function PANEL:Allow(kind, network)
 
     self.itemIcon = NebulaUI.Derma.Inventory[itemType.Icon]
     self.itemBig = bigicon
-    self:SetTooltip(itemType.Name .. ":\n" .. itemType.Help)
+    self:SetTip(24, Color(255, 0, 0), itemType.Name .. ":\n", 18, Color(150, 150, 150), itemType.Help)
 
     if (network) then
         self:Receiver("Receiver." .. kind, function(s, dropList, dropped)

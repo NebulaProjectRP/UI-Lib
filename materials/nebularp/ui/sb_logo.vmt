@@ -1,0 +1,5 @@
+UnlitGeneric {
+    "$basetexture" "nebularp/ui/sb_logo"
+    "$vertexalpha" "1"
+    "$vertexcolor" "1"
+}

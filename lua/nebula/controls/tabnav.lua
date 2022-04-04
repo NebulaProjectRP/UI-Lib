@@ -14,7 +14,6 @@ function PANEL:Init()
     self.Buttons = {}
     self.ActiveTab = nil
     self.MaxButtonWide = 0
-
     self._tabOrder = {}
 
     self.currAlpha = 0
@@ -118,7 +117,6 @@ function PANEL:AddTab(name, control, press)
         return s
     end
     btn.Paint = function(s, w, h)
-        MsgN(s.TargetColor)
         if (s.TargetColor) then
             s.Progress = Lerp(FrameTime() * 2, s.Progress, self.ActiveTab == s and 1 or 0)
             s.Color = LerpVector(s.Progress, color_white:ToVector(), s.TargetColor:ToVector())
