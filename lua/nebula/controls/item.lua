@@ -63,13 +63,14 @@ function PANEL:Allow(kind, network)
             if not item.Reference then return end
             local data = table.Copy(item.Reference)
             s:SetItem(item.Reference.id)
-            item:SetItem(nil)
 
             net.Start("Nebula.Inv:EquipItem")
             net.WriteString(kind)
             net.WriteString(item.Reference.id)
             net.WriteBool(true)
             net.SendToServer()
+
+            item:SetItem(nil)
         end)
     end
 end
@@ -85,6 +86,12 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(24, 15, 29, 150))
     if (self.itemIcon) then
         self.itemIcon(w / 2 - 16, h / 2 - 16, 32, 32, Color(255, 255, 255, 20))
+    end
+end
+
+function PANEL:PaintOver(w, h)
+    if (self.Item and isnumber(self.Item) and self.Item > 1) then
+        draw.SimpleText("x" .. self.Item, NebulaUI:Font(20), w - 4, h - 0, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
     end
 end
 

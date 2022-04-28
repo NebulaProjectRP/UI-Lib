@@ -62,9 +62,9 @@ function PANEL:AddTab(name, control, press)
     local btn = vgui.Create("nebula.button", self)
     btn:SetFont(NebulaUI:Font(24))
     btn:SetTall(self:GetTall() - 2)
-    btn:SetTextInset(0, -2)
+    btn:SetTextInset(12, -2)
     btn:SetTextColor(Color(255, 255, 255, 150))
-    btn:SetText(name)
+    btn:SetText("")
     btn.DoClick = function(s)
         local newControl = self.Controls[name]
         if (IsValid(newControl) and newControl == self.ActivePanel) then
@@ -107,7 +107,7 @@ function PANEL:AddTab(name, control, press)
     end
     btn.SetIcon = function(s, icon)
         btn.iconfunc = icon
-        s:SetContentAlignment(4)
+        s:SetContentAlignment(5)
 
         surface.SetFont(s:GetFont())
         local tx, _ = surface.GetTextSize(s:GetText())
@@ -136,10 +136,12 @@ function PANEL:AddTab(name, control, press)
         surface.SetTexture(gru)
         surface.DrawTexturedRect(4, 4, w - 8, h * (s.Alpha / 255) - 8)
 
+        draw.SimpleText(name, s:GetFont(), w / 2 + 12, h / 2, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
         if (s.iconfunc) then
             surface.SetFont(s:GetFont())
-            local tx, _ = surface.GetTextSize(s:GetText())
-            s.iconfunc(w / 2 - tx / 2 - 14, h / 2 - 12, 24, 24, s.TargetColor or self:GetColor())
+            local tx, _ = surface.GetTextSize(name)
+            s.iconfunc(w / 2 - tx / 2 - 16, h / 2 - 12, 24, 24, s.TargetColor or self:GetColor())
         end
     end
 

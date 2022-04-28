@@ -1,24 +1,29 @@
 local BUTTON = {}
-
+AccessorFunc(BUTTON, "m_iRoundSize", "Radius", FORCE_NUMBER)
 function BUTTON:Init()
     self:SetFont(NebulaUI:Font(18))
     self:SetTextColor(Color(200, 200, 200))
+    self:SetRadius(8)
     self.Alpha = 0
 end
 
 local gradient = Material("gui/center_gradient")
 function BUTTON:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, self:IsHovered() and 50 or 15))
-    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(self:GetRadius(), 0, 0, w, h, Color(255, 255, 255, self:IsHovered() and 50 or 15))
+    draw.RoundedBox(self:GetRadius(), 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
 
     if (self.HighLight or (self:IsHovered() and input.IsMouseDown(MOUSE_LEFT))) then
-        draw.RoundedBox(8, 0, 0, w, h, self.Color or Color(237, 98, 255, 25))
+        draw.RoundedBox(self:GetRadius(), 0, 0, w, h, self.Color or Color(237, 98, 255, 25))
     end
 
     self.Alpha = Lerp(FrameTime() * 4, self.Alpha, self:IsHovered() and 255 or 25)
     surface.SetMaterial(gradient)
     surface.SetDrawColor(46, 0, 64, self.Alpha)
     surface.DrawTexturedRectRotated(w / 2, h / 2, w, h, 0)
+end
+
+function BUTTON:SetFontSize(size)
+    self:SetFont(NebulaUI:Font(size or 18))
 end
 
 vgui.Register("nebula.button", BUTTON, "DButton")
