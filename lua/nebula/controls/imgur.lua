@@ -66,6 +66,7 @@ function PANEL:SetImage(url)
 
     if (file.Exists("nebula/imgur/" .. imgurID .. ".png", "DATA")) then
         self.Material = Material("../data/nebula/imgur/" .. imgurID .. ".png")
+        self.Material:SetInt("$vertexalpha", 1)
         if (debug:GetBool()) then
             MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " loading image material...\n")
         end
@@ -87,6 +88,7 @@ function PANEL:SetImage(url)
             MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " Image successully downloaded!\n")
         end
         self.Material = Material("../data/nebula/imgur/" .. imgurID .. ".png")
+        self.Material:SetInt("$vertexalpha", 1)
         self.wide, self.height = self.Material:Width(), self.Material:Height()
         self.proportion = self.wide / self.height
         self:SetCropSize(self.wide, self.height)
