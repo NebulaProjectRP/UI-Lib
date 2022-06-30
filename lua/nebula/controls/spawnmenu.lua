@@ -23,7 +23,7 @@ local prohibited = {
 }
 local back = Color(34, 1, 51, 225)
 local function stylish(panel)
-    local isAdmin = false//LocalPlayer():IsAdmin()
+    local isAdmin = LocalPlayer():IsAdmin()
     local tools = panel.ToolMenu
     tools.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 17, w, h - 16, Color(255, 255, 255, (s:IsHovered() or s:IsChildHovered()) and 100 or 25))
