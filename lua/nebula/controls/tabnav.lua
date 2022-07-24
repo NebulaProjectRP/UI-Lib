@@ -136,7 +136,7 @@ function PANEL:AddTab(name, control, press)
         surface.SetTexture(gru)
         surface.DrawTexturedRect(4, 4, w - 8, h * (s.Alpha / 255) - 8)
 
-        draw.SimpleText(name, s:GetFont(), w / 2 + 12, h / 2, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText(name, s:GetFont(), w / 2 + (s.iconfunc and 12 or 0), h / 2, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         if (s.iconfunc) then
             surface.SetFont(s:GetFont())

@@ -10,9 +10,13 @@ function Check:SetTarget(target)
     self.Target = target
 end
 
+function Check:OnValueChange(b)
+end
+
 function Check:DoClick()
     self:SetChecked(!self:GetChecked())
     self:SetText(self:GetChecked() and "✔" or "")
+    self:OnValueChange(self:GetChecked())
     if (self.ConVar) then
         RunConsoleCommand(self.ConVar, self:GetChecked() and "1" or "0")
     end
@@ -46,8 +50,12 @@ function Check:Paint(w, h)
     draw.SimpleText(self:GetChecked() and "✔" or "", NebulaUI:Font(24), w - h / 2, h / 2, color_white, 1, 1)
 end
 
+function Check:OnValueChange(b)
+end
+
 function Check:DoClick()
     self:SetChecked(!self:GetChecked())
+    self:OnValueChange(self:GetChecked())
     if (self.ConVar) then
         RunConsoleCommand(self.ConVar, self:GetChecked() and 1 or 0)
     end
