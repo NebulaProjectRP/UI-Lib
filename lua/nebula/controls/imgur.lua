@@ -62,7 +62,9 @@ function PANEL:SetImage(url)
         return
     end
 
-    MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " image ID is ", Color(200, 200, 200), imgurID, "\n")
+    if (debug:GetBool()) then
+        MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " image ID ", Color(200, 200, 200), imgurID, "\n")
+    end
 
     if (file.Exists("nebula/imgur/" .. imgurID .. ".png", "DATA")) then
         self.Material = Material("../data/nebula/imgur/" .. imgurID .. ".png")

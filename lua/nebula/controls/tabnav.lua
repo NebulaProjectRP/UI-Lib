@@ -116,6 +116,9 @@ function PANEL:AddTab(name, control, press)
 
         return s
     end
+    btn.GetText = function(s)
+        return name
+    end
     btn.Paint = function(s, w, h)
         if (s.TargetColor) then
             s.Progress = Lerp(FrameTime() * 2, s.Progress, self.ActiveTab == s and 1 or 0)
