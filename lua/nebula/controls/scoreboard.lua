@@ -12,20 +12,6 @@ for k = 1, 4 do
     branding_icons[k] = GWEN.CreateTextureNormal((k - 1) * 64, 0, 64, 64, branding_atlas)
 end
 
-local branding = {
-    [1] = {
-        Name = "Discord",
-        Link = "https://discord.gg/NebulaRP",
-    },
-    [2] = {
-        Name = "Steam",
-        Link = "https://discord.gg/NebulaRP",
-    },
-    [3] = {
-        Name = "Website",
-        Link = "https://discord.gg/NebulaRP",
-    }
-}
 function PANEL:Init()
     NebulaUI.Scoreboard = self
     self:SetSize(ScrW() * .7, ScrH() * .7)
@@ -71,9 +57,9 @@ function PANEL:Init()
         icon.Paint = function(s, w, h)
             branding_icons[k](0, 0, w, h, Color(255, 255, 255, s:IsHovered() and 255 or 175))
         end
-        icon:SetTooltip(branding[k].Name)
+        icon:SetTooltip(NebulaUI.BrandingConfig[k].Name)
         icon.DoClick = function()
-            gui.OpenURL(branding[k].Link)
+            gui.OpenURL(NebulaUI.BrandingConfig[k].Link)
         end
     end
 
