@@ -4,6 +4,10 @@ NebulaUI.ScoreboardTags = {
   ["superadmin"] = "Owner"
 }
 
+NebulaUI.ScoreboardColorGroups = {
+  ["superadmin"] = "rainbow"
+}
+
 NebulaUI.BrandingConfig = {
   [1] = {
       Name = "Discord",

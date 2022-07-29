@@ -149,17 +149,31 @@ function PANEL:FillPlayers()
                     draw.SimpleText(plys:Deaths(), s:GetFont(), (w / 10) * 7 + 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                     draw.SimpleText(plys:Assists(), s:GetFont(), (w / 10) * 8 + 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                     draw.SimpleText(plys:Ping(), s:GetFont(), w - 8, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-
-                    local ccp = LOUNGE_CHAT.CustomColorsPlayers[plys:SteamID()] or LOUNGE_CHAT.CustomColorsPlayers[plys:SteamID64()]
-		                local ccu = LOUNGE_CHAT.CustomColorsGroups[plys:GetUserGroup()]
-                    local cct = NebulaUI.ScoreboardTags[plys:GetUserGroup()]
-
-                    if (ccu or cct) then
-                        surface.SetFont(s:GetFont())
-                        local tx, _ = surface.GetTextSize(plys:Nick())
-                        draw.SimpleText(cct or plys:GetUserGroup(), NebulaUI:Font(16), 32 + tx, 8, ccu)
-                    end
                 end
+
+                local cc = NebulaUI.ScoreboardColorGroups[plys:GetUserGroup()]
+                local ct = NebulaUI.ScoreboardTags[plys:GetUserGroup()]
+
+                if (ct or cc) then
+                  local tx, _ = line:GetTextSize()
+
+                  line.ug = vgui.Create("DLabel", line)
+                  line.ug:SetText(ct or plys:GetUserGroup())
+                  line.ug:SetFont(NebulaUI:Font(16))
+                  line.ug:SetColor(cc or Color(255, 255, 255))
+                  line.ug:SetPos(30 + tx, 8)
+                  line.ug:SizeToContents()
+
+                  if (cc == "rainbow") then
+                    line.ug.m_iHue = 0
+                    line.ug.m_iRate = 360
+                    line.ug.Think = function(me)
+                      me.m_iHue = (me.m_iHue + FrameTime() * math.min(150, me.m_iRate)) % 360
+                      me:SetFGColor(HSVToColor(me.m_iHue, 1, 1))
+                    end
+                  end
+                end
+
                 line.Avatar = vgui.Create("AvatarImage", line)
                 line.Avatar:SetMouseInputEnabled(false)
                 line.Avatar:SetSize(20, 20)
@@ -173,7 +187,6 @@ function PANEL:FillPlayers()
 end
 
 function PANEL:Paint(w, h)
-
     h = h - self.Foot:GetTall() - 8
     surface.SetDrawColor(0, 0, 0, 175)
     surface.DrawRect(0, 0, w, h)
