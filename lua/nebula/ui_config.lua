@@ -7,7 +7,7 @@ NebulaUI.BrandingConfig = {
   },
   [2] = {
       Name = "Steam",
-      Link = "https://discord.gg/NebulaRP",
+      Link = "https://steamcommunity.com/groups/nebularoleplayofficial",
   },
   [3] = {
       Name = "Website",
