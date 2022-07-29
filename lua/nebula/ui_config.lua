@@ -1,4 +1,8 @@
-// SCOREBOARD BRANDING
+-- SCOREBOARD CONFIG
+
+NebulaUI.ScoreboardTags = {
+  ["superadmin"] = "Owner"
+}
 
 NebulaUI.BrandingConfig = {
   [1] = {

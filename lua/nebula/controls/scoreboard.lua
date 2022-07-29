@@ -151,11 +151,13 @@ function PANEL:FillPlayers()
                     draw.SimpleText(plys:Ping(), s:GetFont(), w - 8, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
                     local ccp = LOUNGE_CHAT.CustomColorsPlayers[plys:SteamID()] or LOUNGE_CHAT.CustomColorsPlayers[plys:SteamID64()]
-		            local ccu = LOUNGE_CHAT.CustomColorsGroups[plys:GetUserGroup()]
-                    if (ccu) then
+		                local ccu = LOUNGE_CHAT.CustomColorsGroups[plys:GetUserGroup()]
+                    local cct = NebulaUI.ScoreboardTags[plys:GetUserGroup()]
+
+                    if (ccu or cct) then
                         surface.SetFont(s:GetFont())
                         local tx, _ = surface.GetTextSize(plys:Nick())
-                        draw.SimpleText(plys:GetUserGroup(), NebulaUI:Font(12), 32 + tx, 11, ccu)
+                        draw.SimpleText(cct or plys:GetUserGroup(), NebulaUI:Font(16), 32 + tx, 8, ccu)
                     end
                 end
                 line.Avatar = vgui.Create("AvatarImage", line)
