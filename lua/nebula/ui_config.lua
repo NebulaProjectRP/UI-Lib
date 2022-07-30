@@ -1,11 +1,13 @@
 -- SCOREBOARD CONFIG
 
 NebulaUI.ScoreboardTags = {
-  ["superadmin"] = "Owner"
+  ["superadmin"] = "Owner",
+  ["trialstaff"] = "Trial Staff"
 }
 
 NebulaUI.ScoreboardColorGroups = {
-  ["superadmin"] = "rainbow"
+  ["superadmin"] = "rainbow",
+  ["trialstaff"] = Color(170, 255, 170)
 }
 
 NebulaUI.BrandingConfig = {
