@@ -158,10 +158,10 @@ function PANEL:FillPlayers()
                   local tx, _ = line:GetTextSize()
 
                   line.ug = vgui.Create("DLabel", line)
-                  line.ug:SetText(ct or plys:GetUserGroup())
+                  line.ug:SetText(" ·  " .. ct or plys:GetUserGroup())
                   line.ug:SetFont(NebulaUI:Font(16))
                   line.ug:SetColor(cc or Color(255, 255, 255))
-                  line.ug:SetPos(30 + tx, 8)
+                  line.ug:SetPos(30 + tx, 7)
                   line.ug:SizeToContents()
 
                   if (cc == "rainbow") then
