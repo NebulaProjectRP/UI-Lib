@@ -159,12 +159,6 @@ function PANEL:FillPlayers()
                   local col = cc or Color(255, 255, 255)
                   local flash
 
-                  if cc and type(cc) == "table" then
-                    col = cc[3]
-                    flash = cc[2]
-                    cc = cc[1]
-                  end
-
                   line.ug = vgui.Create("DLabel", line)
                   line.ug:SetText(ct and " ·  " .. ct or " ·  " .. plys:GetUserGroup())
                   line.ug:SetFont(NebulaUI:Font(16))
@@ -181,10 +175,10 @@ function PANEL:FillPlayers()
                     end
                   end
 
-                  if (cc == "flash") then
-                    line.ug.m_FlashColor = col
-                    line.ug.m_iFlashRate = flash or 2
-
+                  if (cc[1] == "flash") then
+                    line.ug.m_iFlashRate = cc[2] or 2
+                    line.ug.m_FlashColor = cc[3]
+                    
                     line.ug.Think = function(me)
                         local sin = math.abs(math.sin(RealTime() * me.m_iFlashRate))
                         local c = me.m_FlashColor
