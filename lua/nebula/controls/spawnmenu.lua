@@ -1,10 +1,10 @@
 
 local prohibited = NebulaUI.ProhibitedTools
-local isAdmin = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
 local back = Color(34, 1, 51, 225)
 local function stylish(panel)
-    
+    local isAdmin = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
     local tools = panel.ToolMenu
+
     tools.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 17, w, h - 16, Color(255, 255, 255, (s:IsHovered() or s:IsChildHovered()) and 100 or 25))
         draw.RoundedBox(8, 1, 18, w - 2, h - 19, Color(20, 0, 32))
