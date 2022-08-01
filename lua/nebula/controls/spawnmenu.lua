@@ -1,6 +1,6 @@
 
 local prohibited = NebulaUI.ProhibitedTools
-local isAdmin = NebulaUI.SpawnenuAdmin[LocalPlayer():GetUserGroup()]
+local isAdmin = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
 local back = Color(34, 1, 51, 225)
 local function stylish(panel)
     
