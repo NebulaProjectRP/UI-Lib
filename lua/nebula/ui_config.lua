@@ -32,3 +32,33 @@ NebulaUI.BrandingConfig = {
       Link = "https://nebularoleplay.com",
   }
 }
+
+-- SPAWNMENU CONFIG
+
+NebulaUI.ProhibitedTools = {
+    ["gmod_tool ballsocket"] = true,
+    ["gmod_tool elastic"] = true,
+    ["gmod_tool hydraulic"] = true,
+    ["gmod_tool motor"] = true,
+    ["gmod_tool mus"] = true,
+    ["gmod_tool pulley"] = true,
+    ["gmod_tool slider"] = true,
+    ["gmod_tool winch"] = true,
+    ["gmod_tool balloon"] = true,
+    ["gmod_tool dynamite"] = true,
+    ["gmod_tool emitter"] = true,
+    ["gmod_tool hoverball"] = true,
+    ["gmod_tool lamp"] = true,
+    ["gmod_tool light"] = true,
+    ["gmod_tool thruster"] = true,
+    ["gmod_tool wheel"] = true,
+    ["gmod_tool eyeposer"] = true,
+    ["gmod_tool faceposer"] = true,
+    ["gmod_tool finger"] = true,
+    ["gmod_tool inflator"] = true,
+}
+
+NebulaUI.SpawnmenuAdmin = {
+    ["superadmin"] = true,
+    ["management"] = true,
+}
