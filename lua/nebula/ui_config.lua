@@ -35,7 +35,14 @@ NebulaUI.BrandingConfig = {
 
 -- SPAWNMENU CONFIG
 
+NebulaUI.ProhibitedCategories = {
+    ["Posing"] = true,
+    ["Props Tool"] = true,
+    ["Falco Prop Protection"] = true,
+}
+
 NebulaUI.ProhibitedTools = {
+    ["gmod_tool rope"] = true,
     ["gmod_tool ballsocket"] = true,
     ["gmod_tool elastic"] = true,
     ["gmod_tool hydraulic"] = true,
@@ -52,10 +59,13 @@ NebulaUI.ProhibitedTools = {
     ["gmod_tool light"] = true,
     ["gmod_tool thruster"] = true,
     ["gmod_tool wheel"] = true,
-    ["gmod_tool eyeposer"] = true,
-    ["gmod_tool faceposer"] = true,
-    ["gmod_tool finger"] = true,
-    ["gmod_tool inflator"] = true,
+    ["gmod_tool physprop"] = true,
+    ["gmod_tool duplicator"] = true,
+    ["gmod_tool axis"] = true,
+    ["gmod_tool muscle"] = true,
+    ["gmod_tool timedspawner"] = true,
+    ["gmod_tool paint"] = true,
+    ["gmod_tool trails"] = true,
 }
 
 NebulaUI.SpawnmenuAdmin = {
