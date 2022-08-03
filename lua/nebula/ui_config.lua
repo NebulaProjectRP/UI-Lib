@@ -39,6 +39,7 @@ NebulaUI.ProhibitedCategories = {
     ["Posing"] = true,
     ["Props Tool"] = true,
     ["Falco Prop Protection"] = true,
+    ["Zeros Trashman"] = true,
 }
 
 NebulaUI.ProhibitedTools = {
