@@ -1,30 +1,12 @@
-
-local prohibited = {
-    ["gmod_tool ballsocket"] = true,
-    ["gmod_tool elastic"] = true,
-    ["gmod_tool hydraulic"] = true,
-    ["gmod_tool motor"] = true,
-    ["gmod_tool mus"] = true,
-    ["gmod_tool pulley"] = true,
-    ["gmod_tool slider"] = true,
-    ["gmod_tool winch"] = true,
-    ["gmod_tool balloon"] = true,
-    ["gmod_tool dynamite"] = true,
-    ["gmod_tool emitter"] = true,
-    ["gmod_tool hoverball"] = true,
-    ["gmod_tool lamp"] = true,
-    ["gmod_tool light"] = true,
-    ["gmod_tool thruster"] = true,
-    ["gmod_tool wheel"] = true,
-    ["gmod_tool eyeposer"] = true,
-    ["gmod_tool faceposer"] = true,
-    ["gmod_tool finger"] = true,
-    ["gmod_tool inflator"] = true,
-}
+local prohibitedCategories = NebulaUI.ProhibitedCategories
+local prohibitedTools = NebulaUI.ProhibitedTools
 local back = Color(34, 1, 51, 225)
 local function stylish(panel)
-    local isAdmin = LocalPlayer():IsAdmin()
+    local isAdmin = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
     local tools = panel.ToolMenu
+
+    local weps = weapons.GetStored("gmod_tool")
+
     tools.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 17, w, h - 16, Color(255, 255, 255, (s:IsHovered() or s:IsChildHovered()) and 100 or 25))
         draw.RoundedBox(8, 1, 18, w - 2, h - 19, Color(20, 0, 32))
@@ -45,7 +27,15 @@ local function stylish(panel)
         end
 
         for _, p in pairs(v.List:GetCanvas():GetChildren()) do
+            if (not isAdmin and prohibitedCategories[p.Header:GetText()]) then
+                p:Remove()
+            end
+
             for k, tool in pairs(p:GetChildren()) do
+                if (!isfunction(tool.Command) and not isAdmin and prohibitedTools[tool.Command]) then
+                    tool:Remove()
+                end
+
                 tool:SetTextColor(color_white)
                 tool:SetTall(24)
                 tool:SetFont(NebulaUI:Font(15))
@@ -53,9 +43,6 @@ local function stylish(panel)
                     if (s.m_bSelected) then
                         draw.RoundedBox(4, 0, 0, w, h, Color(229, 100, 255, 45))
                     end
-                end
-                if (!isfunction(tool.Command) and not isAdmin and prohibited[tool.Command]) then
-                    tool:Remove()
                 end
             end
         end

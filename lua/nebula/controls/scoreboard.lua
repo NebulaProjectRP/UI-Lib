@@ -156,12 +156,14 @@ function PANEL:FillPlayers()
 
                 if (ct or cc) then
                   local tx, _ = line:GetTextSize()
+                  local col = cc or Color(255, 255, 255)
+                  local flash
 
                   line.ug = vgui.Create("DLabel", line)
-                  line.ug:SetText(ct or plys:GetUserGroup())
+                  line.ug:SetText(ct and " ·  " .. ct or " ·  " .. plys:GetUserGroup())
                   line.ug:SetFont(NebulaUI:Font(16))
-                  line.ug:SetColor(cc or Color(255, 255, 255))
-                  line.ug:SetPos(30 + tx, 8)
+                  line.ug:SetColor(col)
+                  line.ug:SetPos(30 + tx, 7)
                   line.ug:SizeToContents()
 
                   if (cc == "rainbow") then
@@ -170,6 +172,17 @@ function PANEL:FillPlayers()
                     line.ug.Think = function(me)
                       me.m_iHue = (me.m_iHue + FrameTime() * math.min(150, me.m_iRate)) % 360
                       me:SetFGColor(HSVToColor(me.m_iHue, 1, 1))
+                    end
+                  end
+
+                  if (cc[1] == "flash") then
+                    line.ug.m_iFlashRate = cc[2] or 2
+                    line.ug.m_FlashColor = cc[3]
+                    
+                    line.ug.Think = function(me)
+                        local sin = math.abs(math.sin(RealTime() * me.m_iFlashRate))
+                        local c = me.m_FlashColor
+                        me:SetTextColor(Color(c.r * sin, c.g * sin, c.b * sin, 255))
                     end
                   end
                 end
