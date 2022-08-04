@@ -89,6 +89,7 @@ function PANEL:SetImage(url)
         if (debug:GetBool()) then
             MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " Image successully downloaded!\n")
         end
+        if not IsValid(self) then return end
         self.Material = Material("../data/nebula/imgur/" .. imgurID .. ".png")
         self.Material:SetInt("$vertexalpha", 1)
         self.wide, self.height = self.Material:Width(), self.Material:Height()

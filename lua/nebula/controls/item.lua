@@ -21,11 +21,11 @@ function PANEL:SetItem(id, isLocal)
         self:SetTooltip(nil)
         self.Reference = nil
         self.ID = nil
-        return    
+        return
     end
 
     self.isLocal = isLocal
-    self.Reference = NebulaInv:GetReference(id)
+    self.Reference = NebulaInv.Items[id]
     self.ID = id
     if not self.Reference then
         return false
@@ -33,7 +33,7 @@ function PANEL:SetItem(id, isLocal)
     self:SetTooltip(self.Reference.name)
 
     if (isLocal) then
-        self.Item = LocalPlayer():getInventory()[id]
+        self.Item = LocalPlayer():getInventory()[isLocal]
     end
 
     self:Init()
@@ -43,12 +43,13 @@ function PANEL:SetItem(id, isLocal)
         self.model:SetModel(self.Reference.model)
         self.model:Dock(FILL)
     else
-        self.Icon:SetImage(self.Reference.icon)
+        self.Icon:SetImage(self.Reference.imgur)
     end
 
     return true
 end
 
+local waitingResult = false
 function PANEL:Allow(kind, network, group)
     local itemType = NebulaInv.Types[kind]
     if not itemType then
@@ -63,8 +64,14 @@ function PANEL:Allow(kind, network, group)
     if (network) then
         self:Receiver("Receiver." .. kind, function(s, dropList, dropped)
             if not dropped then return end
+
+            if (waitingResult) then
+                Derma_Message("You have to wait for the item to be authorized!", "Ok")
+                return
+            end
+
             local item = dropList[1]
-            
+
             if (group) then
                 local occupied = false
                 for k, v in pairs(group) do
@@ -80,7 +87,8 @@ function PANEL:Allow(kind, network, group)
             end
             if not item.Reference then return end
             local data = table.Copy(item.Reference)
-            s:SetItem(item.Reference.id)
+            s:SetItem(data.id)
+            MsgN(data.id)
 
             net.Start("Nebula.Inv:EquipItem")
             if (self.subslot) then
@@ -88,20 +96,20 @@ function PANEL:Allow(kind, network, group)
             else
                 net.WriteString(kind)
             end
-            net.WriteString(item.Reference.id)
+            net.WriteUInt(item.Slot, 16)
             net.WriteBool(true)
             net.SendToServer()
 
+            waitingResult = item.Slot
             item:SetItem(nil)
         end)
     end
 end
 
-
 function PANEL:Paint(w, h)
     surface.SetAlphaMultiplier(self:GetBackgroundAlpha() / 255)
     if (self.Reference) then
-        draw.RoundedBox(4, 0, 0, w, h, NebulaInv.Rarities[self.Reference.rarity])
+        draw.RoundedBox(4, 0, 0, w, h, NebulaInv.Rarities[self.Reference.rarity or 1])
     else
         draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, 5))
     end
@@ -123,3 +131,11 @@ function PANEL:PaintOver(w, h)
 end
 
 vgui.Register("nebula.item", PANEL, "DButton")
+
+net.Receive("Nebula.Inv:EquipResult", function()
+    local result = net.ReadBool()
+    if (result) then
+        table.remove(NebulaInv.Inventory, waitingResult)
+    end
+    waitingResult = false
+end)
