@@ -41,9 +41,13 @@ function PANEL:SetItem(id, isLocal)
         self.Icon:Remove()
         self.model = vgui.Create("DModelPanel", self)
         self.model:SetModel(self.Reference.model)
+        self.model:SetMouseInputEnabled(false)
         self.model:Dock(FILL)
-    else
+    elseif (self.Reference.imgur) then
         self.Icon:SetImage(self.Reference.imgur)
+    elseif (self.Reference.icon) then
+        self.Icon.Material = Material(self.Reference.icon)
+        self.Icon.HasImage = true
     end
 
     return true
@@ -115,17 +119,19 @@ function PANEL:Paint(w, h)
     end
     surface.SetAlphaMultiplier(1)
 
-    draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(24, 15, 29, 150))
+    local size = self:IsHovered() and 3 or 1
+    draw.RoundedBox(4, size, size, w - size * 2, h - size * 2, Color(24, 15, 29, not self:IsHovered() and 255 or 200))
     if (self.itemIcon) then
         self.itemIcon(w / 2 - 16, h / 2 - 16, 32, 32, Color(255, 255, 255, 20))
     end
 end
 
 function PANEL:PaintOver(w, h)
-    if (self.Item) then
-        local count = self.isLocal and LocalPlayer():getInventory()[self.ID] or 1
+    //MsgN(self.Item)
+    if (self.Reference and self.Item) then
+        local count = self.isLocal and self.Item.am or 1
         if (count > 1) then
-            draw.SimpleText("x" .. count, NebulaUI:Font(20), w - 4, h - 0, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText("x" .. count, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
         end
     end
 end
