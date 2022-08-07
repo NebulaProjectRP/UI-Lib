@@ -92,7 +92,6 @@ function PANEL:Allow(kind, network, group)
             if not item.Reference then return end
             local data = table.Copy(item.Reference)
             s:SetItem(data.id)
-            MsgN(data.id)
 
             net.Start("Nebula.Inv:EquipItem")
             if (self.subslot) then
@@ -103,9 +102,6 @@ function PANEL:Allow(kind, network, group)
             net.WriteUInt(item.Slot, 16)
             net.WriteBool(true)
             net.SendToServer()
-
-            waitingResult = item.Slot
-            item:SetItem(nil)
         end)
     end
 end
@@ -127,21 +123,13 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:PaintOver(w, h)
-    //MsgN(self.Item)
-    if (self.Reference and self.Item) then
-        local count = self.isLocal and self.Item.am or 1
-        if (count > 1) then
-            draw.SimpleText("x" .. count, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-        end
+    if not isnumber(self.isLocal) then
+        return
+    end
+    local item = LocalPlayer():getInventory()[self.isLocal]
+    if (item and item.am > 1) then
+        draw.SimpleText("x" .. item.am, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
     end
 end
 
 vgui.Register("nebula.item", PANEL, "DButton")
-
-net.Receive("Nebula.Inv:EquipResult", function()
-    local result = net.ReadBool()
-    if (result) then
-        table.remove(NebulaInv.Inventory, waitingResult)
-    end
-    waitingResult = false
-end)

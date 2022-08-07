@@ -95,12 +95,3 @@ function notification.AddLegacy(txt, type, length)
     end
     notify_panel:addItem(txt, type, length)
 end
-
-timer.Simple(1, function()
-    for k = 1, 5 do
-        timer.Simple(.1 * k, function()
-            notification.AddLegacy("This is a test notification", k - 1, 5 - k * .1)
-        end)
-        
-    end
-end)
