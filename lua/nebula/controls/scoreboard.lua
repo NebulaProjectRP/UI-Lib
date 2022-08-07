@@ -151,8 +151,8 @@ function PANEL:FillPlayers()
                     draw.SimpleText(plys:Ping(), s:GetFont(), w - 8, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                 end
 
-                local cc = NebulaUI.ScoreboardColorGroups[plys:GetUserGroup()]
-                local ct = NebulaUI.ScoreboardTags[plys:GetUserGroup()]
+                local cc = NebulaUI.UserGroupColorGroups[plys:GetUserGroup()]
+                local ct = NebulaUI.UserGroupTags[plys:GetUserGroup()]
 
                 if (ct or cc) then
                   local tx, _ = line:GetTextSize()

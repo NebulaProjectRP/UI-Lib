@@ -1,6 +1,6 @@
 -- SCOREBOARD CONFIG
 
-NebulaUI.ScoreboardTags = {
+NebulaUI.UserGroupTags = {
   ["superadmin"] = "Owner",
   ["management"] = "Management",
   ["senioradmin"] = "Senior Admin",
@@ -9,7 +9,7 @@ NebulaUI.ScoreboardTags = {
   ["trialstaff"] = "Trial Staff"
 }
 
-NebulaUI.ScoreboardColorGroups = {
+NebulaUI.UserGroupColorGroups = {
   ["superadmin"] = "rainbow",
   ["management"] = { "flash", "2", Color(182, 32, 37) }, -- #b62025
   ["senioradmin"] = { "flash", "2", Color(202, 90, 90) }, -- #ca5a5a
