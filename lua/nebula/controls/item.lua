@@ -10,6 +10,8 @@ function PANEL:Init()
     self:SetBackgroundAlpha(255)
 end
 
+local gr = Material("vgui/gradient-u")
+local glow = Material("particle/particle_glow_01_additive")
 function PANEL:SetItem(id, isLocal)
 
     if (id == nil) then
@@ -30,10 +32,16 @@ function PANEL:SetItem(id, isLocal)
     if not self.Reference then
         return false
     end
-    self:SetTooltip(self.Reference.name)
+    //MsgN(self.IsSlot)
+    if not self.IsAllow then
+        self:SetTooltip(self.Reference.name)
+    end
 
     if (isLocal) then
         self.Item = LocalPlayer():getInventory()[isLocal]
+        if (not table.IsEmpty(self.Item.data)) then
+            self:SetTooltip(nil)
+        end
     end
 
     self:Init()
@@ -63,6 +71,9 @@ function PANEL:Allow(kind, network, group)
 
     self.itemIcon = NebulaUI.Derma.Inventory[itemType.Icon]
     self.itemBig = bigicon
+    self.IsAllow = true
+
+    self:SetTooltip(nil)
     self:SetTip(24, Color(255, 0, 0), itemType.Name .. ":\n", 18, Color(150, 150, 150), itemType.Help)
 
     if (network) then
@@ -108,8 +119,9 @@ end
 
 function PANEL:Paint(w, h)
     surface.SetAlphaMultiplier(self:GetBackgroundAlpha() / 255)
+    local rarityColor = self.Reference and NebulaInv.Rarities[self.Reference.rarity] or color_white
     if (self.Reference) then
-        draw.RoundedBox(4, 0, 0, w, h, NebulaInv.Rarities[self.Reference.rarity or 1])
+        draw.RoundedBox(4, 0, 0, w, h, rarityColor)
     else
         draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, 5))
     end
@@ -117,6 +129,56 @@ function PANEL:Paint(w, h)
 
     local size = self:IsHovered() and 3 or 1
     draw.RoundedBox(4, size, size, w - size * 2, h - size * 2, Color(24, 15, 29, not self:IsHovered() and 255 or 200))
+
+    local item
+    if isnumber(self.isLocal) then
+        item = LocalPlayer():getInventory()[self.isLocal]
+    elseif (self.IsSlot and self.Reference and NebulaInv.Loadout[self.IsSlot]) then
+        item = NebulaInv.Loadout[self.IsSlot]
+    end
+    if (NebulaInv.Mutators and item and not table.IsEmpty(item.data)) then
+        surface.SetDrawColor(ColorAlpha(rarityColor, 40))
+        surface.SetMaterial(glow)
+        surface.DrawTexturedRectRotated(w / 2, h / 2, w * 2, h * 2, 0)
+        if (self:IsHovered()) then
+            DisableClipping(true)
+                local cw, ch = 350, 32 + 40 * table.Count(item.data)
+                local x, y = w / 2 - cw / 2, -ch - 16
+                draw.RoundedBox(8, x, y, cw, ch, Color(255, 255, 255, self:IsHovered() and 50 or 15))
+                draw.RoundedBox(8, x + 1, y + 1, cw - 2, ch - 2, Color(16, 0, 24, 250))
+
+                draw.SimpleText(self.Reference.name, NebulaUI:Font(32), w / 2, y + 4, rarityColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                surface.SetDrawColor(255, 255, 255, 25)
+                surface.DrawRect(x + 8, y + 40, cw - 16, 1)
+
+                local push = 0
+                if (item.data.kills) then
+                    draw.SimpleText("Kills: " .. item.data.kills, NebulaUI:Font(24), w / 2, y + 44 + push, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                    push = push + 30
+                end
+                for k, v in pairs(item.data) do
+                    if (k != "kills") then
+                        local mut = NebulaInv.Mutators[k]
+                        local dark = Color(mut.Color.r * .7, mut.Color.g * .7, mut.Color.b * .7)
+                        surface.SetDrawColor(dark)
+                        surface.DrawRect(x + 2, y + 44 + push, cw - 4, 32)
+
+                        surface.SetDrawColor(mut.Color.r * 1.5, mut.Color.g * 1.5, mut.Color.b * 1.5)
+                        surface.SetMaterial(gr)
+                        surface.DrawTexturedRect(x + 2, y + 44 + push, cw - 4, 32)
+
+                        local desc = mut:Display(tonumber(v))
+                        draw.SimpleText(mut.Name .. " - Level " .. v, NebulaUI:Font(18), x + 8, y + 44 + push + 8, dark, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(mut.Name .. " - Level " .. v, NebulaUI:Font(18), x + 9, y + 45 + push + 8, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(desc, NebulaUI:Font(14), x + 10, y + 45 + push + 23, dark, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        draw.SimpleText(desc, NebulaUI:Font(14), x + 9, y + 45 + push + 22, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        push = push + 40
+                    end
+                end
+            DisableClipping(false)
+        end
+    end
+
     if (self.itemIcon) then
         self.itemIcon(w / 2 - 16, h / 2 - 16, 32, 32, Color(255, 255, 255, 20))
     end
