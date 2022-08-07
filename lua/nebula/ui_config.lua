@@ -36,10 +36,13 @@ NebulaUI.BrandingConfig = {
 -- SPAWNMENU CONFIG
 
 NebulaUI.ProhibitedCategories = {
+    ["Admin"] = true,
     ["Posing"] = true,
     ["Props Tool"] = true,
     ["Falco Prop Protection"] = true,
     ["Zeros Trashman"] = true,
+    ["Robotboy655"] = true,
+    ["TFA SWEP Base Settings"] = true,
 }
 
 NebulaUI.ProhibitedTools = {
