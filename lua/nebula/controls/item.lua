@@ -11,7 +11,7 @@ function PANEL:Init()
 end
 
 local gr = Material("vgui/gradient-u")
-local glow = Material("particle/particle_glow_01_additive")
+local glow = Material("gui/center_gradient")
 function PANEL:SetItem(id, isLocal)
 
     if (id == nil) then
