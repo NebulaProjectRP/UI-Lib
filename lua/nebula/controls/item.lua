@@ -101,6 +101,11 @@ function PANEL:Allow(kind, network, group)
                 end
             end
             if not item.Reference then return end
+            if (item.Reference.basic) then
+                Derma_Message("You can't equip this item on a slot", "Error", "Ok")
+                return
+            end
+
             local data = table.Copy(item.Reference)
             s:SetItem(data.id)
 
