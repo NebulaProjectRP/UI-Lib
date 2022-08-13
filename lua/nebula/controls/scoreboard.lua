@@ -187,17 +187,17 @@ function PANEL:FillPlayers()
                   end
                 end
 
-                local dropdown = vgui.Create("DMenu", line)
-
-                dropdown:AddOption("Copy SteamID32", function()
-                    SetClipboardText(plys:SteamID())
-                end)
-
-                dropdown:AddOption("Copy SteamID64", function()
-                    SetClipboardText(plys:SteamID64())
-                end)
-
                 line.DoClick = function(s)
+                    local dropdown = DermaMenu()
+
+                    dropdown:AddOption("Copy SteamID32", function()
+                        SetClipboardText(plys:SteamID())
+                    end)
+    
+                    dropdown:AddOption("Copy SteamID64", function()
+                        SetClipboardText(plys:SteamID64())
+                    end)
+    
                     dropdown:Open()
                 end
 
