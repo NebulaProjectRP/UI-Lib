@@ -43,6 +43,7 @@ NebulaUI.ProhibitedCategories = {
     ["Zeros Trashman"] = true,
     ["Robotboy655"] = true,
     ["TFA SWEP Base Settings"] = true,
+    ["pVault"] = true,
 }
 
 NebulaUI.ProhibitedTools = {
