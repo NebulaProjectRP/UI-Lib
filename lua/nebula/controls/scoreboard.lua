@@ -190,6 +190,10 @@ function PANEL:FillPlayers()
                 line.DoClick = function(s)
                     local dropdown = DermaMenu()
 
+                    dropdown:AddOption("View Steam Profile", function()
+                        plys:ShowProfile();
+                    end)
+
                     dropdown:AddOption("Copy SteamID32", function()
                         SetClipboardText(plys:SteamID())
                     end)
