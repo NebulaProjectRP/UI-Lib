@@ -2,7 +2,7 @@ local prohibitedCategories = NebulaUI.ProhibitedCategories
 local prohibitedTools = NebulaUI.ProhibitedTools
 local back = Color(34, 1, 51, 225)
 local function stylish(panel)
-    local isAdmin = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
+    local isAllowed = NebulaUI.SpawnmenuAdmin[LocalPlayer():GetUserGroup()]
     local tools = panel.ToolMenu
 
     local weps = weapons.GetStored("gmod_tool")
@@ -27,12 +27,10 @@ local function stylish(panel)
         end
 
         for _, p in pairs(v.List:GetCanvas():GetChildren()) do
-            if (not isAdmin and prohibitedCategories[p.Header:GetText()]) then
-                p:Remove()
-            end
+            if not isAllowed and (prohibitedCategories[p.Header:GetText()] or v.PropertySheetTab:GetText() == 'Admin') then p:Remove() end
 
             for k, tool in pairs(p:GetChildren()) do
-                if (!isfunction(tool.Command) and not isAdmin and prohibitedTools[tool.Command]) then
+                if (!isfunction(tool.Command) and not isAllowed and prohibitedTools[tool.Command]) then
                     tool:Remove()
                 end
 
@@ -68,7 +66,7 @@ local function stylish(panel)
         create.Items["#spawnmenu.category." .. group] = nil
     end
 
-    if !isAdmin then
+    if !isAllowed then
         removeCategories("entities")
         removeCategories("npcs")
         removeCategories("saves")
