@@ -44,10 +44,30 @@ end
 
 vgui.Register("nebula.frame", PANEL, "DFrame")
 
+local PANEL = {}
+
+function PANEL:Init()
+    self:DockPadding(8, 8, 8, 8)
+end
+
+function PANEL:Paint(w, h)
+    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 25))
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+end
+
+function PANEL:SetGrid(x, y)
+    if IsValid(self.Grid) then return end
+
+    self.Grid = vgui.Create("nebula.grid", self)
+    self.Grid:Dock(FILL)
+    self.Grid:SetGrid(x, y)
+end
+
+vgui.Register("nebula.panel", PANEL, "DFrame")
+
 local SCROLL = {}
 
 function SCROLL:Init()
-    
 end
 
 function SCROLL:Paint(w, h)

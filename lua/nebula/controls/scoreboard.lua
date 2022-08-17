@@ -139,13 +139,11 @@ function PANEL:FillPlayers()
 
             for k, plys in pairs(players) do
                 local line = vgui.Create("DButton", self.List)
-
                 local cr = NebulaUI.RankTags[plys:getTitle()]
 
                 if cr then
                     local name = cr[1] or plys:getTitle()
                     local col = cr[2] or Color(255, 255, 255)
-
                     line.rt = vgui.Create("DLabel", line)
                     line.rt:SetText(name .. " ▸")
                     line.rt:SetFont(NebulaUI:Font(20))
@@ -171,18 +169,24 @@ function PANEL:FillPlayers()
                 line:SetTall(28)
                 line:DockMargin(8, 4, 8, 0)
                 line:SetContentAlignment(4)
-                line:SetTextInset((line.rt and (line.rt:GetTextSize()) + 4 or 0) + 28, 0)
+                line:SetTextInset((line.rt and line.rt:GetTextSize() + 4 or 0) + 28, 0)
                 line:SetFont(NebulaUI:Font(20))
                 line.pair = i % 2 == 1
                 line:SetTextColor(Color(255, 255, 255, line.pair and 255 or 150))
 
                 line.Paint = function(s, w, h)
-                    if not IsValid(plys) then s:Remove() return end
+                    if not IsValid(plys) then
+                        s:Remove()
+
+                        return
+                    end
 
                     draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, s.pair and 35 or 20))
                     draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(24, 0, 40, 228))
 
-                    if s:IsHovered() then draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, 5)) end
+                    if s:IsHovered() then
+                        draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, 5))
+                    end
 
                     draw.SimpleText(DarkRP.formatMoney(plys:getDarkRPVar("money")), s:GetFont(), (w / 10) * 3.5, h / 2, money_color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                     draw.SimpleText(plys:Frags(), s:GetFont(), (w / 10) * 6 + 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -196,7 +200,6 @@ function PANEL:FillPlayers()
                 if ct then
                     local name = ct[1] or plys:GetUserGroup()
                     local col = ct[2] or Color(255, 255, 255)
-
                     line.ug = vgui.Create("DLabel", line)
                     line.ug:SetText(" ·  " .. name)
                     line.ug:SetFont(NebulaUI:Font(16))
@@ -218,21 +221,7 @@ function PANEL:FillPlayers()
                 end
 
                 line.DoClick = function(s)
-                    local dropdown = DermaMenu()
-
-                    dropdown:AddOption("View Steam Profile", function()
-                        plys:ShowProfile()
-                    end)
-
-                    dropdown:AddOption("Copy SteamID32", function()
-                        SetClipboardText(plys:SteamID())
-                    end)
-
-                    dropdown:AddOption("Copy SteamID64", function()
-                        SetClipboardText(plys:SteamID64())
-                    end)
-
-                    dropdown:Open()
+                    self:CreateDropdown(plys)
                 end
 
                 line.Avatar = vgui.Create("AvatarImage", line)
@@ -240,13 +229,71 @@ function PANEL:FillPlayers()
                 line.Avatar:SetSize(20, 20)
                 line.Avatar:SetPos(4, 4)
                 line.Avatar:SetPlayer(plys, 24)
-
                 i = i + 1
             end
 
             categories[ply:Team()] = cat
         end
     end
+end
+
+function PANEL:CreateDropdown(plys)
+    local dropdown = DermaMenu()
+
+    dropdown:AddOption("View Steam Profile", function()
+        plys:ShowProfile()
+    end)
+
+    dropdown:AddSpacer()
+
+    dropdown:AddOption("Copy SteamID32", function()
+        SetClipboardText(plys:SteamID())
+    end)
+
+    dropdown:AddOption("Copy SteamID64", function()
+        SetClipboardText(plys:SteamID64())
+    end)
+
+    dropdown:AddOption("Copy Nick", function()
+        SetClipboardText(plys:Nick())
+    end)
+
+    if LocalPlayer() ~= plys then
+        dropdown:AddSpacer()
+
+        if LocalPlayer():getGang() ~= "" and LocalPlayer():hasGangPermission("CanInvite") then
+            dropdown:AddOption("Invite to your Gang", function()
+                net.Start("Nebula.Gangs:Invite")
+                net.WriteEntity(plys)
+                net.SendToServer()
+            end):SetIcon("icon16/group_add.png")
+        end
+
+        dropdown:AddOption("Invite to Trade", function()
+            net.Start("NebulaInv.Trade:SendInvitation")
+            net.WriteEntity(plys)
+            net.SendToServer()
+        end):SetIcon("icon16/gun.png")
+
+        dropdown:AddOption("Send Money", function()
+            Derma_StringRequest("How much do you want to send to " .. plys:Nick() .. "?", "Confirm", "100", function(num)
+                num = tonumber(num)
+
+                if num == nil or num < 0 or not LocalPlayer():canAfford(num) then
+                    Derma_Message("Please enter a valid number!", "Error", "OK")
+
+                    return
+                end
+
+                net.Start("NebulaInv:SendMoney")
+                net.WriteEntity(plys)
+                net.WriteUInt(num, 32)
+                net.SendToServer()
+            end)
+        end):SetIcon("icon16/money.png")
+    end
+
+    dropdown:Open()
 end
 
 function PANEL:Paint(w, h)
@@ -263,6 +310,8 @@ function PANEL:Paint(w, h)
     surface.DrawTexturedRectRotated(w / 2, 0, 162, 162, 0)
     DisableClipping(false)
     h = h + 48
+    draw.SimpleText("Playtime", NebulaUI:Font(16), w - 16, 48, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    draw.SimpleText(string.NicePlayTime(), NebulaUI:Font(24), w - 16, 70, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
 end
 
 vgui.Register("nebula.scoreboard", PANEL, "nebula.frame")
