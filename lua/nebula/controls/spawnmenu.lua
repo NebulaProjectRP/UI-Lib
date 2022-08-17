@@ -25,13 +25,13 @@ local function stylish(panel)
         end
 
         for _, p in pairs(v.List:GetCanvas():GetChildren()) do
-            if (not isAdmin and prohibitedCategories[p.Header:GetText()]) then
+            if (not isAllowed and prohibitedCategories[p.Header:GetText()]) then
                 p:Remove()
                 continue
             end
 
             for k, tool in pairs(p:GetChildren()) do
-                if (!isfunction(tool.Command) and not isAdmin and prohibitedTools[tool.Command]) then
+                if (!isfunction(tool.Command) and not isAllowed and prohibitedTools[tool.Command]) then
                     tool:Remove()
                     continue
                 end
