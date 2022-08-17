@@ -10,7 +10,7 @@ NebulaUI.UserGroupTags = {
 }
 
 NebulaUI.RankTags = {
-    ["cosmic"] = { "COSMIC", Color(255, 0, 94), "flash", },
+    ["cosmic"] = { "COSMIC", Color(255, 0, 94), "flash", }, -- #ff005e
 }
 
 NebulaUI.BrandingConfig = {
