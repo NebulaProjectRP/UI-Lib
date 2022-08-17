@@ -25,10 +25,16 @@ local function stylish(panel)
         end
 
         for _, p in pairs(v.List:GetCanvas():GetChildren()) do
-            if not isAllowed and (prohibitedCategories[p.Header:GetText()] or v.PropertySheetTab:GetText() == 'Admin') then p:Remove() end
+            if (not isAdmin and prohibitedCategories[p.Header:GetText()]) then
+                p:Remove()
+                continue
+            end
 
             for k, tool in pairs(p:GetChildren()) do
-                if not isfunction(tool.Command) and not isAllowed and prohibitedTools[tool.Command] then tool:Remove() end
+                if (!isfunction(tool.Command) and not isAdmin and prohibitedTools[tool.Command]) then
+                    tool:Remove()
+                    continue
+                end
 
                 tool:SetTextColor(color_white)
                 tool:SetTall(24)
