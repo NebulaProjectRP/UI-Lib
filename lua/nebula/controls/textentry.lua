@@ -54,7 +54,7 @@ function TEXT:SetMultiline(b)
 end
 
 function TEXT:SetText(txt)
-    self.textentry:SetText(txt)
+    self.textentry:SetText(txt or "")
 end
 
 function TEXT:GetText()
