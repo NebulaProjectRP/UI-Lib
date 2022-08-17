@@ -1,40 +1,34 @@
 -- SCOREBOARD CONFIG
 
 NebulaUI.UserGroupTags = {
-  ["superadmin"] = "Owner",
-  ["management"] = "Management",
-  ["senioradmin"] = "Senior Admin",
-  ["admin"] = "Admin",
-  ["mod"] = "Moderator",
-  ["trialstaff"] = "Trial Staff"
+    ["superadmin"] = { "Owner", nil, "rainbow", },
+    ["management"] = { "Management", Color(182, 32, 37), "flash", }, -- #b62025
+    ["senioradmin"] = { "Senior Admin", Color(202, 90, 90), "flash", }, -- #ca5a5a
+    ["admin"] = { "Admin", Color(255, 153, 101), }, -- #ff9965
+    ["mod"] = { "Moderator", Color(154, 255, 238), },-- #9affee
+    ["trialstaff"] = { "Trial Staff", Color(170, 255, 170), }, -- #aaffaa
 }
 
-NebulaUI.UserGroupColorGroups = {
-  ["superadmin"] = "rainbow",
-  ["management"] = { "flash", "2", Color(182, 32, 37) }, -- #b62025
-  ["senioradmin"] = { "flash", "2", Color(202, 90, 90) }, -- #ca5a5a
-  ["admin"] = Color(255, 153, 101), -- #ff9965
-  ["mod"] = Color(154, 255, 238), -- #9affee
-  ["trialstaff"] = Color(170, 255, 170) -- #aaffaa
+NebulaUI.RankTags = {
+    ["cosmic"] = { "COSMIC", Color(255, 0, 94), "flash", },
 }
 
 NebulaUI.BrandingConfig = {
-  [1] = {
-      Name = "Discord",
-      Link = "https://discord.nebularoleplay.com",
-  },
-  [2] = {
-      Name = "Steam",
-      Link = "https://steamcommunity.com/groups/nebularoleplayofficial",
-  },
-  [3] = {
-      Name = "Website",
-      Link = "https://nebularoleplay.com",
-  }
+    [1] = {
+        Name = "Discord",
+        Link = "https://discord.nebularoleplay.com",
+    },
+    [2] = {
+        Name = "Steam",
+        Link = "https://steamcommunity.com/groups/nebularoleplayofficial",
+    },
+    [3] = {
+        Name = "Website",
+        Link = "https://nebularoleplay.com",
+    }
 }
 
 -- SPAWNMENU CONFIG
-
 NebulaUI.ProhibitedCategories = {
     ["Admin"] = true,
     ["Posing"] = true,
