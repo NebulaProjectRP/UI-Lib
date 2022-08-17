@@ -211,7 +211,7 @@ function PANEL:FillPlayers()
                     end
 
                     if ct[3] == "flash" then
-                        line.ug.m_iFlashRate = cc[4] or 2
+                        line.ug.m_iFlashRate = ct[4] or 2
                         line.ug.m_FlashColor = col
                         line.ug.Think = flashThink
                     end
