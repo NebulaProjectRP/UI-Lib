@@ -258,7 +258,7 @@ function PANEL:CreateDropdown(plys)
         SetClipboardText(plys:Nick())
     end)
 
-    if LocalPlayer() ~= plys then
+    if false and LocalPlayer() ~= plys then
         dropdown:AddSpacer()
 
         if LocalPlayer():getGang() ~= "" and LocalPlayer():hasGangPermission("CanInvite") then
