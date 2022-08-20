@@ -82,7 +82,7 @@ function PANEL:Allow(kind, network, group)
 
             if (waitingResult) then
                 Derma_Message("You have to wait for the item to be authorized!", "Ok")
-                return
+                //return
             end
 
             local item = dropList[1]
@@ -103,6 +103,11 @@ function PANEL:Allow(kind, network, group)
             if not item.Reference then return end
             if (item.Reference.basic) then
                 Derma_Message("You can't equip this item on a slot", "Error", "Ok")
+                return
+            end
+
+            if (item.Reference.type == "weapon" and item.Reference.rarity == 6) then
+                Derma_Message("Press click and 'Equip weapon' for permanents", "Error", "Ok")
                 return
             end
 
@@ -141,6 +146,11 @@ function PANEL:Paint(w, h)
     elseif (self.IsSlot and self.Reference and NebulaInv.Loadout[self.IsSlot]) then
         item = NebulaInv.Loadout[self.IsSlot]
     end
+
+    if (self.forceInfo) then
+        item = self.forceInfo
+    end
+
     if (NebulaInv.Mutators and item and not table.IsEmpty(item.data)) then
         surface.SetDrawColor(ColorAlpha(rarityColor, 40))
         surface.SetMaterial(glow)
@@ -190,10 +200,13 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:PaintOver(w, h)
-    if not isnumber(self.isLocal) then
+    if not isnumber(self.isLocal) and not self.forceInfo then
         return
     end
     local item = LocalPlayer():getInventory()[self.isLocal]
+    if (self.forceInfo) then
+        item = self.forceInfo
+    end
     if (item and item.am > 1) then
         draw.SimpleText("x" .. item.am, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
     end
