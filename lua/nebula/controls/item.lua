@@ -107,7 +107,7 @@ function PANEL:Allow(kind, network, group)
             end
 
             if (item.Reference.type == "weapon" and item.Reference.rarity == 6) then
-                Derma_Message("Press click and 'Equip weapon' for permanents", "Error", "Ok")
+                Derma_Message("You cannot slot permanent weapons. Instead click and use them!", "Error", "Ok")
                 return
             end
 
