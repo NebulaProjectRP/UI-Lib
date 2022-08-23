@@ -158,6 +158,9 @@ function PANEL:Paint(w, h)
         if (self:IsHovered()) then
             DisableClipping(true)
                 local cw, ch = 350, 32 + 40 * table.Count(item.data)
+                if (self.Reference.rarity == 6 and item.data.lives) then
+                    ch = ch - 28
+                end
                 local x, y = w / 2 - cw / 2, -ch - 16
                 draw.RoundedBox(8, x, y, cw, ch, Color(255, 255, 255, self:IsHovered() and 50 or 15))
                 draw.RoundedBox(8, x + 1, y + 1, cw - 2, ch - 2, Color(16, 0, 24, 250))
@@ -172,6 +175,7 @@ function PANEL:Paint(w, h)
                     push = push + 30
                 end
                 for k, v in pairs(item.data) do
+                    if (k == "lives" and self.Reference.rarity == 6) then continue end
                     if (k != "kills") then
                         local mut = NebulaInv.Mutators[k]
                         local dark = Color(mut.Color.r * .7, mut.Color.g * .7, mut.Color.b * .7)
