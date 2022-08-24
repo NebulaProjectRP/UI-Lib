@@ -203,6 +203,7 @@ function PANEL:Paint(w, h)
     end
 end
 
+local star = Material("icon16/star.png")
 function PANEL:PaintOver(w, h)
     if not isnumber(self.isLocal) and not self.forceInfo then
         return
@@ -210,6 +211,11 @@ function PANEL:PaintOver(w, h)
     local item = LocalPlayer():getInventory()[self.isLocal]
     if (self.forceInfo) then
         item = self.forceInfo
+    end
+    if (item.fav) then
+        surface.SetMaterial(star)
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.DrawTexturedRect(6, h - 22, 16, 16)
     end
     if (item and item.am > 1) then
         draw.SimpleText("x" .. item.am, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
