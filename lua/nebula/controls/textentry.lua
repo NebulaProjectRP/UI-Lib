@@ -65,6 +65,10 @@ function TEXT:GetValue()
     return ""
 end
 
+function TEXT:SetEditable(b)
+    self.textentry:SetEditable(b)
+end
+
 function TEXT:Paint(w, h)
     draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, self.textentry:IsEditing() and 25 or 5))
     draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))

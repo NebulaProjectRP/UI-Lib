@@ -22,6 +22,10 @@ function BUTTON:Paint(w, h)
     surface.DrawTexturedRectRotated(w / 2, h / 2, w, h, 0)
 end
 
+function BUTTON:SetRound(x)
+    self:SetRadius(x)
+end
+
 function BUTTON:SetFontSize(size)
     self:SetFont(NebulaUI:Font(size or 18))
 end

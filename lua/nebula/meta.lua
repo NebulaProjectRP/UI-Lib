@@ -3,6 +3,35 @@ NebulaUI = NebulaUI or {
     FontsTitle = {}
 }
 
+XeninUI = XeninUI or {}
+XeninUI.Branding = false
+
+-- Materials
+XeninUI.Materials = {
+	CloseButton = Material("xenin/closebutton.png", "noclamp smooth"),
+	Search = Material("xenin/search.png", "noclamp smooth")
+}
+-- Animation
+XeninUI.TransitionTime = 0.15
+
+-- UI theme
+XeninUI.Theme = {
+	Primary = Color(48, 48, 48),
+	Navbar = Color(41, 41, 41),
+	Background = Color(30, 30, 30),
+	--Accent = Color(41, 128, 185),
+	Accent = Color(230, 82, 37),
+	Red = Color(230, 58, 64),
+	Green = Color(46, 204, 113),
+	Blue = Color(41, 128, 185),
+	Yellow = Color(201, 176, 15)
+}
+
+XeninUI.Frame = {
+	Width = 960,
+	Height = 720
+}
+
 function NebulaUI:Font(x, title)
     if (title) then
         if (self.FontsTitle[x]) then

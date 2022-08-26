@@ -258,39 +258,44 @@ function PANEL:CreateDropdown(plys)
         SetClipboardText(plys:Nick())
     end)
 
-    if false and LocalPlayer() ~= plys then
+    if LocalPlayer() ~= plys then
         dropdown:AddSpacer()
 
-        if LocalPlayer():getGang() ~= "" and LocalPlayer():hasGangPermission("CanInvite") then
-            dropdown:AddOption("Invite to your Gang", function()
-                net.Start("Nebula.Gangs:Invite")
-                net.WriteEntity(plys)
-                net.SendToServer()
-            end):SetIcon("icon16/group_add.png")
-        end
-
-        dropdown:AddOption("Invite to Trade", function()
-            net.Start("NebulaInv.Trade:SendInvitation")
-            net.WriteEntity(plys)
-            net.SendToServer()
-        end):SetIcon("icon16/gun.png")
-
-        dropdown:AddOption("Send Money", function()
-            Derma_StringRequest("How much do you want to send to " .. plys:Nick() .. "?", "Confirm", "100", function(num)
-                num = tonumber(num)
-
-                if num == nil or num < 0 or not LocalPlayer():canAfford(num) then
-                    Derma_Message("Please enter a valid number!", "Error", "OK")
-
-                    return
+        if (not LocalPlayer():IsDueling() and not plys:IsDueling()) then
+            dropdown:AddOption("Challenge to a duel", function()
+                if IsValid(DUEL_CREATION) then
+                    DUEL_CREATION:Remove()
                 end
 
-                net.Start("NebulaInv:SendMoney")
+                DUEL_CREATION = vgui.Create("NebulaDuels.DuelCreation")
+                DUEL_CREATION:Setup(plys)
+                net.Start("NebulaDuels.InvitePlayer")
                 net.WriteEntity(plys)
-                net.WriteUInt(num, 32)
                 net.SendToServer()
             end)
-        end):SetIcon("icon16/money.png")
+        end
+
+        dropdown:AddOption(plys:IsMuted() and "UnMute" or "Mute", function()
+            plys:SetMuted(not plys:IsMuted())
+        end)
+
+        if (LocalPlayer():IsAdmin()) then
+            dropdown:AddOption("Go to", function()
+                RunConsoleCommand("say", "!goto " .. plys:SteamID())
+            end)
+
+            dropdown:AddOption("Bring", function()
+                RunConsoleCommand("say", "!bring " .. plys:SteamID())
+            end)
+
+            dropdown:AddOption("Freeze", function()
+                RunConsoleCommand("say", "!freeze " .. plys:SteamID())
+            end)
+
+            dropdown:AddOption("Unfreeze", function()
+                RunConsoleCommand("say", "!unfreeze " .. plys:SteamID())
+            end)
+        end
     end
 
     dropdown:Open()

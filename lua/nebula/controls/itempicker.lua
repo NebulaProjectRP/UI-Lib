@@ -87,10 +87,10 @@ function PANEL:Populate(filter)
     end
 end
 
-vgui.Register("XeninUI.ItemPicker", PANEL, "nebula.frame")
+vgui.Register("nebula.itempicker", PANEL, "nebula.frame")
 
 function ItemPicker()
-    local sel = vgui.Create("XeninUI.ItemPicker")
+    local sel = vgui.Create("nebula.itempicker")
 
     return sel
 end
