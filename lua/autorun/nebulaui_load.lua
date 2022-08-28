@@ -29,3 +29,4 @@ for k, v in pairs(file.Find("nebula/controls/*.lua", "LUA")) do
 end
 
 MsgC(Color(255, 50, 255), "[UI] ", color_white, " Loaded successfuly\n")
+hook.Run("XeninUI.Loaded")

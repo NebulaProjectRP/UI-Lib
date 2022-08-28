@@ -32,7 +32,6 @@ function PANEL:SetItem(id, isLocal)
     if not self.Reference then
         return false
     end
-    //MsgN(self.IsSlot)
     if not self.IsAllow then
         self:SetTooltip(self.Reference.name)
     end
