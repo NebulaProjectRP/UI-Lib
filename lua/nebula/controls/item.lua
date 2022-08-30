@@ -211,7 +211,7 @@ function PANEL:PaintOver(w, h)
     if (self.forceInfo) then
         item = self.forceInfo
     end
-    if (item.fav) then
+    if (item and item.fav) then
         surface.SetMaterial(star)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.DrawTexturedRect(6, h - 22, 16, 16)
