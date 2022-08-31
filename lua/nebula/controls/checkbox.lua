@@ -55,7 +55,6 @@ function Check:Paint(w, h)
     draw.RoundedBox(8, w - h + 2, 2, h - 4, h - 4, Color(255, 255, 255, self:IsHovered() and 50 or 15))
     draw.RoundedBox(8, w - h + 3, 3, h - 6, h - 6, Color(16, 0, 24, 250))
     draw.SimpleText(self:GetChecked() and "✔" or "", NebulaUI:Font(24), w - h / 2, h / 2, color_white, 1, 1)
-    MsgN(self:GetChecked())
 end
 
 function Check:OnValueChange(b)
