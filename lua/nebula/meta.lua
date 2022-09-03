@@ -139,6 +139,39 @@ function XeninUI:DrawNPCOverhead(npc, tbl)
 	--]]
 end
 
+local blur = Material("pp/blurscreen")
+function XeninUI:DrawBlur(panel, amount)
+  if (LocalPlayer().blurDisabled) then return end
+  
+	local x, y = panel:LocalToScreen(0, 0)
+	local scrW, scrH = ScrW(), ScrH()
+	surface.SetDrawColor(255, 255, 255)
+	surface.SetMaterial(blur)
+	for i = 1, 3 do
+		blur:SetFloat("$blur", (i / 3) * (amount or 6))
+		blur:Recompute()
+		render.UpdateScreenEffectTexture()
+		surface.DrawTexturedRect(x * -1, y * -1, scrW, scrH)
+	end
+end
+
+function XeninUI:DrawBlurHUD(x, y, w, h)
+	local X, Y = 0,0
+
+	surface.SetDrawColor(255,255,255)
+	surface.SetMaterial(blur)
+
+	for i = 1, 5 do
+		blur:SetFloat("$blur", (i / 3) * (5))
+		blur:Recompute()
+
+		render.UpdateScreenEffectTexture()
+
+		render.SetScissorRect(x, y, x+w, y+h, true)
+			surface.DrawTexturedRect(X * -1, Y * -1, ScrW(), ScrH())
+		render.SetScissorRect(0, 0, 0, 0, false)
+	end
+end
 
 function XeninUI:DrawShadowText(text, font, x, y, col, xAlign, yAlign, amt, shadow)
     for i = 1, amt do
