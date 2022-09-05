@@ -175,6 +175,13 @@ function PANEL:SelectTab(name)
     end
 end
 
+PANEL.MOffset = 0
+function PANEL:OnMouseWheeled(delta)
+    local maxIdeal = self.MaxButtonWide * table.Count(self.Buttons)
+    self.MOffset = math.Clamp(self.MOffset + delta * 20, -maxIdeal / 2, maxIdeal / 2)
+    self:InvalidateLayout(true)
+end
+
 function PANEL:PerformLayout(w, h)
     local remainingWide = w
     local totalSize = 0
@@ -195,7 +202,7 @@ function PANEL:PerformLayout(w, h)
 
     for k = 1, #self._tabOrder do
         local btn = self._tabOrder[k]
-        btn:SetPos(startAt, 0)
+        btn:SetPos(startAt + self.MOffset, 0)
         startAt = startAt + separation
         if IsValid(self.Header) and math.Round(table.Count(self.Buttons) / 2) == k then
             startAt = startAt + self.Header:GetWide() + self:GetGap()

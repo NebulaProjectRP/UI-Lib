@@ -67,7 +67,29 @@ vgui.Register("nebula.panel", PANEL, "DFrame")
 
 local SCROLL = {}
 
+local lightWhite = Color(255, 255, 255, 15)
+local darkPurple = Color(8, 0, 12)
+local buttonBase = Color(16, 0, 24)
+local buttonBaseHover = Color(63, 10, 90)
 function SCROLL:Init()
+    local sbar = self:GetVBar()
+    sbar:SetWide(20)
+    function sbar:Paint(w, h)
+        draw.RoundedBox(4, 0, 0, w, h, darkPurple)
+    end
+    function sbar.btnUp:Paint(w, h)
+        draw.RoundedBoxEx(4, 0, 0, w, h, lightWhite, true, true, false, false)
+        draw.RoundedBox(4, 1, 1, w - 2, h - 2, self:IsHovered() and buttonBaseHover or buttonBase)
+    end
+    function sbar.btnDown:Paint(w, h)
+        draw.RoundedBoxEx(4, 0, 0, w, h, lightWhite, false, false, true, true)
+        draw.RoundedBox(4, 1, 1, w - 2, h - 2, self:IsHovered() and buttonBaseHover or buttonBase)
+    end
+    sbar.btnGrip:SetCursor("hand")
+    function sbar.btnGrip:Paint(w, h)
+        draw.RoundedBoxEx(4, 0, 0, w, h, lightWhite, false, false, true, true)
+        draw.RoundedBox(4, 1, 1, w - 2, h - 2, (self:IsHovered() or self.Depressed) and buttonBaseHover or buttonBase)
+    end
 end
 
 function SCROLL:Paint(w, h)
