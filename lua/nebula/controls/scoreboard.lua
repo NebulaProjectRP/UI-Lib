@@ -43,7 +43,7 @@ function PANEL:Init()
             surface.DrawRect(9, 5 + ty + 4, (tx - 2) * left, 8)
         end
 
-        draw.SimpleText(player.GetCount() .. "/" .. game.MaxPlayers(), NebulaUI:Font(46, true), w - 8, 8, lightWhite, TEXT_ALIGN_RIGHT)
+        draw.SimpleText(player.GetCount() .. "/" .. game.MaxPlayers(), NebulaUI:Font(46, true), w - 8, 8, color_white, TEXT_ALIGN_RIGHT)
     end
 
     for k = 1, 3 do

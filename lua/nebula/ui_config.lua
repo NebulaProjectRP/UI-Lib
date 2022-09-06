@@ -36,7 +36,6 @@ NebulaUI.ProhibitedCategories = {
     ["Falco Prop Protection"] = true,
     ["Zeros Trashman"] = true,
     ["Robotboy655"] = true,
-    ["TFA SWEP Base Settings"] = true,
     ["pVault"] = true,
 }
 
