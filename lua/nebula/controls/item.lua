@@ -1,4 +1,32 @@
 local PANEL = {}
+queueOrder = {}
+local queueThreads = 24
+
+local function refreshQueue()
+    timer.Create("Process.ItemImage", 0, 1, function()
+        if (table.IsEmpty(queueOrder)) then
+            return
+        end
+        local alive = queueThreads
+        for k = 1, queueThreads do
+            local s = queueOrder[1]
+            if (IsValid(s)) then
+                s:DoInsert(function()
+                    alive = alive - 1
+                    if (alive <= 0) then
+                        refreshQueue()
+                    end
+                end)
+            else
+                alive = 0
+                queueOrder = {}
+                timer.Remove("Process.ItemImage")
+            end
+            table.remove(queueOrder, 1)
+        end
+    end)
+end
+
 AccessorFunc(PANEL, "m_fBackgroundAlpha", "BackgroundAlpha", FORCE_NUMBER)
 
 function PANEL:Init()
@@ -44,6 +72,13 @@ function PANEL:SetItem(id, isLocal)
     end
 
     self:Init()
+    table.insert(queueOrder, self)
+    refreshQueue()
+
+    return true
+end
+
+function PANEL:DoInsert(cb)
     if (self.Reference.type == "model") then
         self.Icon:Remove()
         self.model = vgui.Create("DModelPanel", self)
@@ -51,13 +86,14 @@ function PANEL:SetItem(id, isLocal)
         self.model:SetMouseInputEnabled(false)
         self.model:Dock(FILL)
     elseif (self.Reference.imgur) then
-        self.Icon:SetImage(self.Reference.imgur)
+        self.Icon:SetImage(self.Reference.imgur, cb)
+        return
     elseif (self.Reference.icon) then
         self.Icon.Material = Material(self.Reference.icon)
         self.Icon.HasImage = true
     end
 
-    return true
+    cb()
 end
 
 local waitingResult = false

@@ -11,6 +11,8 @@ PANEL.HasImage = false
 AccessorFunc(PANEL, "m_iFitMode", "FitMode", FORCE_NUMBER)
 AccessorFunc(PANEL, "m_tColor", "Color")
 
+_ImageCache = {}
+
 local debug = CreateConVar("nebula_debug_imgur", "0")
 
 function PANEL:Init()
@@ -33,8 +35,22 @@ function PANEL:SetContentAllignment(x, y)
     self:SetFitMode(FIT_COVER)
 end
 
-function PANEL:SetImage(url)
+function PANEL:SetImage(url, cb)
     local imgurID = ""
+    local real_url = url
+    if (_ImageCache[real_url]) then
+        self.Material = _ImageCache[real_url].Material
+        self.Material:SetInt("$vertexalpha", 1)
+        self.HasImage = true
+        self.imgurID = _ImageCache[real_url].imgurID
+        self.wide, self.height = self.Material:Width(), self.Material:Height()
+        self.proportion = self.wide / self.height
+        self:SetCropSize(self.wide, self.height)
+        if (cb) then
+            cb(true)
+        end
+        return
+    end
 
     if (debug:GetBool()) then
         MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " loading image from url ", Color(200, 200, 200), url, "\n")
@@ -59,6 +75,9 @@ function PANEL:SetImage(url)
 
     if (debug:GetBool() and self.imgurID == imgurID) then
         MsgC(Color(135, 209, 38), "[IMGUR]", color_white, " image ID it's already applied\n")
+        if (cb) then
+            cb()
+        end
         return
     end
 
@@ -77,6 +96,13 @@ function PANEL:SetImage(url)
         self.wide, self.height = self.Material:Width(), self.Material:Height()
         self.proportion = self.wide / self.height
         self:SetCropSize(self.wide, self.height)
+        _ImageCache[real_url] = {
+            Material = self.Material,
+            imgurID = imgurID
+        }
+        if (cb) then
+            cb()
+        end
         return
     end
 
@@ -97,6 +123,9 @@ function PANEL:SetImage(url)
         self:SetCropSize(self.wide, self.height)
         self.HasImage = true
         self.imgurID = imgurID
+        if (cb) then
+            cb()
+        end
     end)
 end
 
