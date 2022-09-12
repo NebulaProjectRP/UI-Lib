@@ -1,6 +1,6 @@
 local PANEL = {}
 queueOrder = {}
-local queueThreads = 24
+local queueThreads = 64
 
 local function refreshQueue()
     timer.Create("Process.ItemImage", 0, 1, function()
@@ -45,7 +45,8 @@ function PANEL:SetItem(id, isLocal)
     if (id == nil) then
         if (IsValid(self.Icon)) then
             self.Icon:Remove()
-        elseif (IsValid(self.model)) then
+        end
+        if (IsValid(self.model)) then
             self.model:Remove()
         end
         self:SetTooltip(nil)
