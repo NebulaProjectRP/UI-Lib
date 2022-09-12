@@ -7,8 +7,9 @@ function PANEL:Init()
 
     PLAYER_SEARCH = self
     local x, y = input.GetCursorPos()
-    self:SetPos(x, y)
-    self:SetSize(512, ScrH() - y - 32)
+    local tall = math.max(ScrH() - y - 32, 400)
+    self:SetPos(x, math.min(y, ScrH() - tall -  32))
+    self:SetSize(512, tall)
     self:SetTitle("")
     self:SetTitle("Search an Item...")
     self.Search = vgui.Create("nebula.textentry", self)
@@ -36,8 +37,14 @@ function PANEL:Init()
     self.Grid:Dock(FILL)
     self.Grid:SetSpaceX(8)
     self.Grid:SetSpaceY(8)
-    self:Populate()
+
+    self:SetScreenLock(true)
+    self:SetMinHeight(800)
     self:MakePopup()
+end
+
+function PANEL:Open()
+    self:Populate()
 end
 
 function PANEL:PaintOver(w, h)
@@ -49,6 +56,10 @@ function PANEL:PaintOver(w, h)
 end
 
 function PANEL:OnItemSelected(k, v)
+end
+
+function PANEL:Filter(item)
+    return true
 end
 
 local noitem = Material("asap_printers/noaccess.png")
@@ -68,6 +79,7 @@ function PANEL:Populate(filter)
 
     for k, v in pairs(LocalPlayer():getInventory()) do
         if not NebulaInv.Items[v.id] then continue end
+        if (self:Filter(v.id) == false) then continue end
         local name = NebulaInv.Items[v.id].name
         local found = string.find(string.lower(name), string.lower(filter or ""), 1, false)
         if not found then continue end
@@ -85,6 +97,8 @@ function PANEL:Populate(filter)
             self:Remove()
         end
     end
+
+    self:SetScreenLock(true)
 end
 
 vgui.Register("nebula.itempicker", PANEL, "nebula.frame")

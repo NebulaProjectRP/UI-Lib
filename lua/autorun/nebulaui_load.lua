@@ -9,6 +9,9 @@ AddCSLuaFile("xeninui/libs/animations.lua")
 AddCSLuaFile("xeninui/elements/popup.lua")
 AddCSLuaFile("xeninui/elements/query.lua")
 AddCSLuaFile("xeninui/elements/avatar.lua")
+AddCSLuaFile("xeninui/elements/checkbox.lua")
+AddCSLuaFile("xeninui/elements/slider.lua")
+AddCSLuaFile("xeninui/elements/query_single_button.lua")
 
 if CLIENT then
     include("nebula/meta.lua")
@@ -19,6 +22,9 @@ if CLIENT then
     include("xeninui/elements/popup.lua")
     include("xeninui/elements/query.lua")
     include("xeninui/elements/avatar.lua")
+    include("xeninui/elements/slider.lua")
+    include("xeninui/elements/checkbox.lua")
+    include("xeninui/elements/query_single_button.lua")
 end
 
 for k, v in pairs(file.Find("nebula/controls/*.lua", "LUA")) do

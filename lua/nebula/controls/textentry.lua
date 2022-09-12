@@ -69,9 +69,20 @@ function TEXT:SetEditable(b)
     self.textentry:SetEditable(b)
 end
 
+function TEXT:SetIcon(mat)
+    self.icon = mat
+    self.textentry:DockMargin(mat and 24 or 0, 0, 0, 0)
+end
+
 function TEXT:Paint(w, h)
     draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, self.textentry:IsEditing() and 25 or 5))
     draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    if (self.icon) then
+        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetMaterial(self.icon)
+        surface.DrawTexturedRectRotated(h / 2, h / 2, 16, 16, 0)
+    end
 end
 
 vgui.Register("nebula.textentry", TEXT)
+vgui.Register("XeninUI.TextEntry", TEXT)

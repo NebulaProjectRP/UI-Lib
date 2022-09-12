@@ -99,6 +99,7 @@ end
 
 vgui.Register("nebula.scroll", SCROLL, "DScrollPanel")
 vgui.Register("nebula.scrollpanel", SCROLL, "DScrollPanel")
+vgui.Register("XeninUI.Scrollpanel.Wyvern", SCROLL, "DScrollPanel")
 
 local FORM = {}
 AccessorFunc(FORM, "m_sTitle", "Title", FORCE_STRING)

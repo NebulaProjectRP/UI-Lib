@@ -36,6 +36,7 @@ local function New(typ, r, x, y, ...)
 	if (typ == CIRCLE_OUTLINED) then
 		local outline_width = ...
 		circle:SetOutlineWidth(tonumber(outline_width))
+
 	elseif (typ == CIRCLE_BLURRED) then
 		local blur_layers, blur_density = ...
 		circle:SetBlurLayers(tonumber(blur_layers))
@@ -392,6 +393,10 @@ do
 	function CIRCLE:SetPos(x, y)
 		self:SetX(x)
 		self:SetY(y)
+
+		if (self.m_Type == CIRCLE_OUTLINED) then
+			self.m_ChildCircle:SetPos(x, y)
+		end
 	end
 
 	function CIRCLE:SetAngles(s, e)

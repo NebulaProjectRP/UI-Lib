@@ -79,12 +79,26 @@ function PANEL:SetItem(id, isLocal)
 end
 
 function PANEL:DoInsert(cb)
-    if (self.Reference.type == "model") then
+    local type = self.Reference.type
+    if (type == "model" or type == "trinket") then
         self.Icon:Remove()
         self.model = vgui.Create("DModelPanel", self)
         self.model:SetModel(self.Reference.model)
         self.model:SetMouseInputEnabled(false)
         self.model:Dock(FILL)
+        self.model.PreDrawModel = function(s, ent)
+            render.SuppressEngineLighting(true)
+            ent:DrawModel()
+            render.SuppressEngineLighting(false)
+            return false
+        end
+        self.model.LayoutEntity = function()
+        end
+        if (type == "trinket")  then
+            self.model:SetCamPos(Vector(16, 16, -3))
+            self.model:SetLookAt(Vector(1, 0, -3))
+            self.model:SetFOV(30)
+        end
     elseif (self.Reference.imgur) then
         self.Icon:SetImage(self.Reference.imgur, cb)
         return
