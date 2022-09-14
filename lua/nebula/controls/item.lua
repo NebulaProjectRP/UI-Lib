@@ -3,8 +3,10 @@ queueOrder = {}
 local queueThreads = 64
 
 local function refreshQueue()
-    timer.Create("Process.ItemImage", 0, 1, function()
+    timer.Create("Process.ItemImage", 0, 0, function()
+
         if (table.IsEmpty(queueOrder)) then
+            timer.Remove("Process.ItemImage")
             return
         end
         local alive = queueThreads
@@ -17,10 +19,6 @@ local function refreshQueue()
                         refreshQueue()
                     end
                 end)
-            else
-                alive = 0
-                queueOrder = {}
-                timer.Remove("Process.ItemImage")
             end
             table.remove(queueOrder, 1)
         end
