@@ -8,12 +8,14 @@ function BUTTON:Init()
 end
 
 local gradient = Material("gui/center_gradient")
+local purple = Color(16, 0, 24, 250)
+local lightWhite = Color(237, 98, 255, 25)
 function BUTTON:Paint(w, h)
     draw.RoundedBox(self:GetRadius(), 0, 0, w, h, Color(255, 255, 255, self:IsHovered() and 50 or 15))
-    draw.RoundedBox(self:GetRadius(), 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(self:GetRadius(), 1, 1, w - 2, h - 2, purple)
 
     if (self.HighLight or (self:IsHovered() and input.IsMouseDown(MOUSE_LEFT))) then
-        draw.RoundedBox(self:GetRadius(), 0, 0, w, h, self.Color or Color(237, 98, 255, 25))
+        draw.RoundedBox(self:GetRadius(), 0, 0, w, h, self.Color or lightWhite)
     end
 
     self.Alpha = Lerp(FrameTime() * 4, self.Alpha, self:IsHovered() and 255 or 25)

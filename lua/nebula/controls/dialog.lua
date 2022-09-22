@@ -29,13 +29,14 @@ function PANEL:SetContent(txt)
     return self
 end
 
+local dark = Color(0, 0, 0, 200)
 function PANEL:PaintOver(w, h)
     if (self.Markup) then
         self.Markup:Draw(w / 2, 36, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
     end
 
     if (not self.Disposed and self:GetUseTimer()) then
-        draw.RoundedBox(4, 8, h - 46, w - 16, 8, Color(0, 0, 0, 200))
+        draw.RoundedBox(4, 8, h - 46, w - 16, 8, dark)
         local progress = self:GetSeconds() / self._maxSeconds
         self:SetSeconds(self:GetSeconds() - FrameTime())
 

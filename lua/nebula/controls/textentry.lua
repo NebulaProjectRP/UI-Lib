@@ -1,6 +1,8 @@
 local TEXT = {}
 AccessorFunc(TEXT, "m_bBackground", "TextColor")
+AccessorFunc(TEXT, "m_iMaxLetters", "MaxLetters")
 function TEXT:Init()
+    self:SetMaxLetters(0)
     self:SetTall(36)
     self:SetTextColor(Color(235, 235, 235))
     self.textentry = vgui.Create("DTextEntry", self)
@@ -14,6 +16,10 @@ function TEXT:Init()
         self:OnEnter(val)
     end
     self.textentry.OnValueChange = function(s, txt)
+        if (self:GetMaxLetters() > 0) then
+            txt = string.sub(txt, 1, self:GetMaxLetters())
+            s:SetText(txt)
+        end
         self:OnValueChange(txt)
     end
 
@@ -74,13 +80,19 @@ function TEXT:SetIcon(mat)
     self.textentry:DockMargin(mat and 24 or 0, 0, 0, 0)
 end
 
+local lightWhite = Color(255, 255, 255, 50)
+local purple = Color(16, 0, 24, 250)
 function TEXT:Paint(w, h)
     draw.RoundedBox(4, 0, 0, w, h, Color(255, 255, 255, self.textentry:IsEditing() and 25 or 5))
-    draw.RoundedBox(4, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(4, 1, 1, w - 2, h - 2, purple)
     if (self.icon) then
-        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetDrawColor(self:GetColor())
         surface.SetMaterial(self.icon)
         surface.DrawTexturedRectRotated(h / 2, h / 2, 16, 16, 0)
+    end
+
+    if (self:GetMaxLetters() > 0) then
+        draw.SimpleText(#self.textentry:GetText() .. "/" .. self:GetMaxLetters(), NebulaUI:Font(18), w - 4, h - 4, lightWhite, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
     end
 end
 

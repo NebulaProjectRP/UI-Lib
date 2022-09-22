@@ -11,9 +11,11 @@ function PANEL:Init()
     end
 end
 
+local purple = Color(16, 0, 24, 250)
+local lightWhite = Color(255, 255, 255, 25)
 function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, self.Dragging and 100 or 25))
-    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, purple)
 
     surface.SetDrawColor(255, 255, 255, 5)
     surface.DrawRect(8, 32, w - 16, 1)
@@ -51,8 +53,8 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 25))
-    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(8, 0, 0, w, h, lightWhite)
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, pruple)
 end
 
 function PANEL:SetGrid(x, y)
@@ -93,8 +95,8 @@ function SCROLL:Init()
 end
 
 function SCROLL:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 5))
-    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 100))
+    draw.RoundedBox(8, 0, 0, w, h, lightWhite)
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, purple)
 end
 
 vgui.Register("nebula.scroll", SCROLL, "DScrollPanel")
@@ -114,8 +116,8 @@ function FORM:SetTitle(title)
 end
 
 function FORM:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 25))
-    draw.RoundedBox(8, 1, 1, w - 2, h - 2, Color(16, 0, 24, 250))
+    draw.RoundedBox(8, 0, 0, w, h, lightWhite)
+    draw.RoundedBox(8, 1, 1, w - 2, h - 2, purple)
     draw.SimpleText(self:GetTitle(), NebulaUI:Font(20), w / 2, 16, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     if (self.m_sTitle) then

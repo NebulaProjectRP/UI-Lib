@@ -175,6 +175,7 @@ function PANEL:Allow(kind, network, group)
     end
 end
 
+local purple = Color(16, 0, 24, 250)
 function PANEL:Paint(w, h)
     surface.SetAlphaMultiplier(self:GetBackgroundAlpha() / 255)
     local rarityColor = self.Reference and NebulaInv.Rarities[self.Reference.rarity] or color_white
@@ -211,7 +212,7 @@ function PANEL:Paint(w, h)
                 end
                 local x, y = w / 2 - cw / 2, -ch - 16
                 draw.RoundedBox(8, x, y, cw, ch, Color(255, 255, 255, self:IsHovered() and 50 or 15))
-                draw.RoundedBox(8, x + 1, y + 1, cw - 2, ch - 2, Color(16, 0, 24, 250))
+                draw.RoundedBox(8, x + 1, y + 1, cw - 2, ch - 2, purple)
 
                 draw.SimpleText(self.Reference.name, NebulaUI:Font(32), w / 2, y + 4, rarityColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
                 surface.SetDrawColor(255, 255, 255, 25)
@@ -262,11 +263,11 @@ function PANEL:PaintOver(w, h)
     end
     if (item and item.fav) then
         surface.SetMaterial(star)
-        surface.SetDrawColor(255, 255, 255, 255)
+        surface.SetDrawColor(color_white)
         surface.DrawTexturedRect(6, h - 22, 16, 16)
     end
     if (item and item.am > 1) then
-        draw.SimpleText("x" .. item.am, NebulaUI:Font(24), w - 8, h - 4, Color(255, 255, 255, 255), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+        draw.SimpleText("x" .. item.am, NebulaUI:Font(24), w - 8, h - 4, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
     end
 end
 
