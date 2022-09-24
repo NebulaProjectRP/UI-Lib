@@ -58,7 +58,7 @@ end
 function PANEL:OnItemSelected(k, v)
 end
 
-function PANEL:Filter(item)
+function PANEL:Filter(item, slot)
     return true
 end
 
@@ -79,7 +79,7 @@ function PANEL:Populate(filter)
 
     for k, v in pairs(LocalPlayer():getInventory()) do
         if not NebulaInv.Items[v.id] then continue end
-        if (self:Filter(v.id) == false) then continue end
+        if (self:Filter(v.id, k) == false) then continue end
         local name = NebulaInv.Items[v.id].name
         local found = string.find(string.lower(name), string.lower(filter or ""), 1, false)
         if not found then continue end
